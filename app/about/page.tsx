@@ -1,103 +1,80 @@
-'use client';
-import { motion } from 'framer-motion';
-import { FaBullseye, FaEye, FaCode, FaLightbulb, FaHandshake, FaStar, FaUsers, FaHeart } from 'react-icons/fa';
+"use client";
+import { FaBullseye, FaEye, FaHeart, FaCode, FaLightbulb, FaHandshake } from "react-icons/fa";
 
-const values = [
-  { icon: FaCode,        title: 'Innovation',   desc: 'We embrace cutting-edge technologies to craft future-ready solutions.' },
-  { icon: FaHeart,       title: 'Integrity',    desc: 'Transparency and honesty guide every client engagement.' },
-  { icon: FaStar,        title: 'Excellence',   desc: 'We set high standards and consistently exceed expectations.' },
-  { icon: FaUsers,       title: 'Collaboration',desc: 'We work closely with clients as trusted partners, not just vendors.' },
-  { icon: FaHandshake,   title: 'Reliability',  desc: 'On-time, on-budget delivery you can count on every time.' },
-  { icon: FaLightbulb,   title: 'Agility',      desc: 'We adapt quickly to change and deliver in fast-paced environments.' },
-];
-
-const timeline = [
-  { year: '2019', event: 'Raptor Webcraft Technologies founded.' },
-  { year: '2020', event: 'First enterprise web platform launched for a regional client.' },
-  { year: '2021', event: 'Expanded into IT consulting & advisory services.' },
-  { year: '2022', event: 'Reached 30+ satisfied clients across multiple industries.' },
-  { year: '2023', event: 'Launched cloud integration & .NET backend solutions.' },
-  { year: '2024', event: 'Full MERN + .NET stack offering with dedicated support team.' },
+const VALUES = [
+  { icon: FaCode,       title: "Innovation",  desc: "We embrace cutting-edge technologies to deliver forward-thinking solutions." },
+  { icon: FaHeart,      title: "Integrity",   desc: "Honest, transparent relationships with every client and partner." },
+  { icon: FaBullseye,   title: "Excellence",  desc: "We hold ourselves to the highest standards in every project we deliver." },
+  { icon: FaHandshake,  title: "Partnership", desc: "We treat our clients as long-term partners, not just customers." },
+  { icon: FaLightbulb,  title: "Creativity",  desc: "Unique, creative approaches to every challenge we face." },
+  { icon: FaEye,        title: "Vision",      desc: "We see beyond today, building solutions ready for tomorrow." },
 ];
 
 export default function AboutPage() {
   return (
-    <div style={{ background: '#0d0618' }} className="min-h-screen">
-      {/* Hero */}
-      <section className="py-32 px-6 text-center" style={{ background: 'linear-gradient(135deg, #1a0a2e, #3D1A5C, #2563EB)' }}>
-        <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }}>
-          <h1 className="text-5xl font-black text-white mb-4">About <span style={{ color: '#FF8C00' }}>Raptor Webcraft</span></h1>
-          <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-            A software & tech solutions company that develops websites, delivers IT consulting, and provides strategic technology advisory.
+    <div style={{ background: "#0d0618", color: "#fbfbff", paddingTop: "5rem" }}>
+      <section style={{ padding: "4rem 1.5rem 3rem", textAlign: "center", background: "radial-gradient(ellipse at top,rgba(91,44,159,0.25) 0%,transparent 70%)" }}>
+        <div style={{ maxWidth: "52rem", margin: "0 auto" }}>
+          <h1 style={{ fontSize: "clamp(2rem,5vw,3.5rem)", fontWeight: 900, marginBottom: "1rem" }}>About <span style={{ color: "#FF8C00" }}>Raptor Webcraft</span></h1>
+          <p style={{ color: "#9ca3af", fontSize: "1.125rem", lineHeight: 1.7 }}>A Software & Tech Solutions company based in Kathmandu, Nepal — developing websites, delivering IT consulting, and providing technology advisory services since 2019.</p>
+        </div>
+      </section>
+
+      <section style={{ padding: "4rem 1.5rem", maxWidth: "72rem", margin: "0 auto" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(280px,1fr))", gap: "2rem" }}>
+          <div style={{ background: "rgba(26,10,46,0.6)", border: "1px solid rgba(91,44,159,0.3)", borderRadius: "1.25rem", padding: "2rem" }}>
+            <FaBullseye style={{ fontSize: "2rem", color: "#FF8C00", marginBottom: "1rem" }} />
+            <h3 style={{ color: "#fff", fontWeight: 700, marginBottom: ".75rem", fontSize: "1.25rem" }}>Our Mission</h3>
+            <p style={{ color: "#9ca3af", lineHeight: 1.7 }}>To empower businesses in Nepal and beyond with innovative, reliable, and cutting-edge technology solutions that drive growth, efficiency, and digital transformation.</p>
+          </div>
+          <div style={{ background: "rgba(26,10,46,0.6)", border: "1px solid rgba(91,44,159,0.3)", borderRadius: "1.25rem", padding: "2rem" }}>
+            <FaEye style={{ fontSize: "2rem", color: "#5B2C9F", marginBottom: "1rem" }} />
+            <h3 style={{ color: "#fff", fontWeight: 700, marginBottom: ".75rem", fontSize: "1.25rem" }}>Our Vision</h3>
+            <p style={{ color: "#9ca3af", lineHeight: 1.7 }}>To be the most trusted technology partner in South Asia, recognized for delivering world-class digital solutions with a client-first approach and unwavering commitment to excellence.</p>
+          </div>
+        </div>
+      </section>
+
+      <section style={{ padding: "4rem 1.5rem", maxWidth: "72rem", margin: "0 auto" }}>
+        <h2 style={{ textAlign: "center", fontSize: "clamp(1.75rem,4vw,2.25rem)", fontWeight: 800, marginBottom: "2.5rem" }}>Our <span style={{ color: "#FF8C00" }}>Core Values</span></h2>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(240px,1fr))", gap: "1.5rem" }}>
+          {VALUES.map((v) => (
+            <div key={v.title} style={{ background: "rgba(26,10,46,0.5)", border: "1px solid rgba(91,44,159,0.25)", borderRadius: "1rem", padding: "1.5rem" }}>
+              <v.icon style={{ fontSize: "1.5rem", color: "#FF8C00", marginBottom: ".75rem" }} />
+              <h4 style={{ color: "#fff", fontWeight: 700, marginBottom: ".5rem" }}>{v.title}</h4>
+              <p style={{ color: "#9ca3af", fontSize: ".875rem", lineHeight: 1.6 }}>{v.desc}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section style={{ padding: "4rem 1.5rem", maxWidth: "72rem", margin: "0 auto" }}>
+        <h2 style={{ textAlign: "center", fontSize: "clamp(1.75rem,4vw,2.25rem)", fontWeight: 800, marginBottom: "2.5rem" }}>Company <span style={{ color: "#FF8C00" }}>Timeline</span></h2>
+        <div style={{ maxWidth: "42rem", margin: "0 auto" }}>
+          {[
+            { year: "2019", event: "Raptor Webcraft Technologies founded in Kathmandu" },
+            { year: "2020", event: "First major enterprise website project delivered" },
+            { year: "2021", event: "Expanded into IT Consulting & Advisory services" },
+            { year: "2022", event: "Reached 25+ satisfied clients milestone" },
+            { year: "2023", event: "Launched full-stack software development division" },
+            { year: "2024", event: "50+ projects delivered, growing team & services" },
+          ].map((item) => (
+            <div key={item.year} style={{ display: "flex", gap: "1.5rem", marginBottom: "1.5rem", alignItems: "flex-start" }}>
+              <div style={{ background: "linear-gradient(to bottom,#FF8C00,#5B2C9F)", color: "#fff", fontWeight: 800, fontSize: ".875rem", padding: ".375rem .875rem", borderRadius: "999px", flexShrink: 0 }}>{item.year}</div>
+              <p style={{ color: "#d1d5db", lineHeight: 1.6, paddingTop: ".25rem" }}>{item.event}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section style={{ padding: "4rem 1.5rem", background: "rgba(91,44,159,0.08)", borderTop: "1px solid rgba(91,44,159,0.2)", textAlign: "center" }}>
+        <div style={{ maxWidth: "36rem", margin: "0 auto" }}>
+          <h2 style={{ fontSize: "1.75rem", fontWeight: 800, marginBottom: "1rem" }}>📍 Visit Us</h2>
+          <p style={{ color: "#9ca3af", lineHeight: 1.8 }}>
+            Mandikhatar, Budhanilkantha-09<br/>Kathmandu 44600, Bagmati, Nepal<br/>
+            <a href="tel:+977014375420" style={{ color: "#FF8C00", textDecoration: "none" }}>+977-01-4375420</a><br/>
+            <a href="mailto:rwct.raptorwebcraft@gmail.com" style={{ color: "#FF8C00", textDecoration: "none" }}>rwct.raptorwebcraft@gmail.com</a>
           </p>
-        </motion.div>
-      </section>
-
-      {/* Who We Are */}
-      <section className="py-20 px-6 max-w-6xl mx-auto">
-        <div className="grid md:grid-cols-2 gap-12 items-center">
-          <div>
-            <h2 className="text-3xl font-black text-white mb-4">Who <span style={{ color: '#FF8C00' }}>We Are</span></h2>
-            <p className="text-gray-400 leading-relaxed mb-4">
-              Raptor Webcraft Technologies is a forward-thinking software and IT solutions company dedicated to helping businesses
-              thrive in the digital era. We combine technical expertise with strategic insight to deliver solutions that truly matter.
-            </p>
-            <p className="text-gray-400 leading-relaxed">
-              Whether you need a stunning website, a robust enterprise platform, or expert IT guidance, our team brings
-              the skills, dedication, and experience to exceed your expectations every time.
-            </p>
-          </div>
-          <div className="grid grid-cols-2 gap-4">
-            {[['50+','Projects'],['30+','Clients'],['5+','Years'],['24/7','Support']].map(([v,l])=>(
-              <div key={l} className="p-6 rounded-2xl text-center" style={{ background: 'linear-gradient(135deg,#1e0a3c,#2d1257)', border:'1px solid rgba(91,44,159,0.4)' }}>
-                <div className="text-3xl font-black" style={{ color:'#FF8C00' }}>{v}</div>
-                <div className="text-gray-400 text-sm mt-1">{l}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Mission & Vision */}
-      <section className="py-16 px-6 max-w-6xl mx-auto grid md:grid-cols-2 gap-8">
-        {[
-          { icon: FaBullseye, title: 'Our Mission', color: '#FF8C00', text: 'To empower businesses with innovative, scalable, and reliable technology solutions that drive growth, efficiency, and competitive advantage in the digital landscape.' },
-          { icon: FaEye,      title: 'Our Vision',  color: '#5B2C9F', text: 'To be the most trusted technology partner in the region — recognized for excellence, integrity, and the transformative impact we create for our clients.' },
-        ].map(({ icon: Icon, title, color, text }) => (
-          <div key={title} className="p-8 rounded-2xl" style={{ background: 'linear-gradient(135deg,#1e0a3c,#2d1257)', border: `1px solid ${color}40` }}>
-            <Icon className="text-4xl mb-4" style={{ color }} />
-            <h3 className="text-2xl font-bold text-white mb-3">{title}</h3>
-            <p className="text-gray-400 leading-relaxed">{text}</p>
-          </div>
-        ))}
-      </section>
-
-      {/* Core Values */}
-      <section className="py-16 px-6 max-w-6xl mx-auto">
-        <h2 className="text-3xl font-black text-white text-center mb-12">Core <span style={{ color: '#FF8C00' }}>Values</span></h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {values.map((v, i) => (
-            <motion.div key={v.title} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1 }}
-              className="p-6 rounded-2xl" style={{ background: 'linear-gradient(135deg,#1e0a3c,#2d1257)', border:'1px solid rgba(91,44,159,0.3)' }}>
-              <v.icon className="text-2xl mb-3" style={{ color: '#FF8C00' }} />
-              <h3 className="text-lg font-bold text-white mb-1">{v.title}</h3>
-              <p className="text-gray-400 text-sm">{v.desc}</p>
-            </motion.div>
-          ))}
-        </div>
-      </section>
-
-      {/* Timeline */}
-      <section className="py-16 px-6 max-w-3xl mx-auto">
-        <h2 className="text-3xl font-black text-white text-center mb-12">Our <span style={{ color: '#FF8C00' }}>Journey</span></h2>
-        <div className="relative border-l-2 pl-8 space-y-8" style={{ borderColor: '#5B2C9F' }}>
-          {timeline.map((t) => (
-            <motion.div key={t.year} initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} className="relative">
-              <div className="absolute -left-10 w-4 h-4 rounded-full mt-1" style={{ background: '#FF8C00' }} />
-              <span className="text-sm font-bold" style={{ color: '#FF8C00' }}>{t.year}</span>
-              <p className="text-gray-300 mt-1">{t.event}</p>
-            </motion.div>
-          ))}
         </div>
       </section>
     </div>

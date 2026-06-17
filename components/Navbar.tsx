@@ -1,76 +1,90 @@
-'use client';
-import { useState, useEffect } from 'react';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { FaBars, FaTimes } from 'react-icons/fa';
+"use client";
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import Image from "next/image";
+import { useRouter, usePathname } from "next/navigation";
+import { FaBars, FaTimes, FaSignOutAlt, FaTachometerAlt } from "react-icons/fa";
 
-const links = [
-  { href:'/',          label:'Home' },
-  { href:'/about',     label:'About Us' },
-  { href:'/resources', label:'Resources' },
-  { href:'/notices',   label:'Notices' },
+const LINKS = [
+  { href: "/",          label: "Home" },
+  { href: "/about",     label: "About Us" },
+  { href: "/resources", label: "Resources" },
+  { href: "/notices",   label: "Notices" },
 ];
 
 export default function Navbar() {
-  const pathname = usePathname();
+  const [open,     setOpen]     = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [open, setOpen] = useState(false);
+  const [user,     setUser]     = useState<{ name: string; role: string } | null>(null);
+  const router   = useRouter();
+  const pathname = usePathname();
 
   useEffect(() => {
-    const fn = () => setScrolled(window.scrollY > 20);
-    window.addEventListener('scroll', fn);
-    return () => window.removeEventListener('scroll', fn);
-  }, []);
+    const stored = localStorage.getItem("rwt_user");
+    if (stored) setUser(JSON.parse(stored));
+    const onScroll = () => setScrolled(window.scrollY > 20);
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [pathname]);
+
+  const logout = async () => {
+    await fetch("/api/auth/logout", { method: "POST" });
+    localStorage.removeItem("rwt_token");
+    localStorage.removeItem("rwt_user");
+    setUser(null);
+    router.push("/login");
+  };
+
+  const navBg = scrolled ? "rgba(13,6,24,0.97)" : "transparent";
+  const navBd = scrolled ? "blur(16px)" : "none";
+  const navBorder = scrolled ? "1px solid rgba(91,44,159,0.4)" : "none";
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
-      style={{ background: scrolled ? 'rgba(13,6,24,0.95)' : 'transparent', backdropFilter: scrolled ? 'blur(12px)' : 'none', borderBottom: scrolled ? '1px solid rgba(91,44,159,0.3)' : 'none' }}>
-      <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl flex items-center justify-center font-black text-lg"
-            style={{ background:'linear-gradient(135deg,#5B2C9F,#2563EB)' }}>
-            <span style={{ color:'#FF8C00' }}>R</span>
-          </div>
-          <div className="leading-tight">
-            <div className="font-black text-sm" style={{ color:'#FF8C00' }}>RAPTOR</div>
-            <div className="font-bold text-xs text-white opacity-80">WEBCRAFT</div>
-          </div>
-        </Link>
-
-        <div className="hidden md:flex items-center gap-6">
-          {links.map(l => (
-            <Link key={l.href} href={l.href}
-              className="text-sm font-semibold transition-all hover:opacity-80"
-              style={{ color: pathname===l.href ? '#FF8C00' : '#e2e8f0', borderBottom: pathname===l.href ? '2px solid #FF8C00' : '2px solid transparent', paddingBottom:'2px' }}>
-              {l.label}
-            </Link>
-          ))}
-          <Link href="/login" className="px-5 py-2 rounded-xl text-sm font-bold text-white transition-all hover:scale-105"
-            style={{ background:'linear-gradient(135deg,#5B2C9F,#2563EB)' }}>
-            Login
+    <nav style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 50, background: navBg, backdropFilter: navBd, borderBottom: navBorder, transition: "all 0.3s" }}>
+      <style>{".nav-link{color:#d1d5db;text-decoration:none;font-size:.875rem;font-weight:500;transition:color .2s}.nav-link:hover{color:#FF8C00}.nav-link.active{color:#FF8C00}.nav-btn{padding:.5rem 1.25rem;border-radius:.75rem;background:linear-gradient(to right,#FF8C00,#5B2C9F);color:#fff;font-weight:600;text-decoration:none;font-size:.875rem;display:inline-block}.logout-btn{display:flex;align-items:center;gap:.5rem;padding:.5rem 1rem;border-radius:.75rem;border:1px solid rgba(91,44,159,.6);background:rgba(26,10,46,.6);color:#fff;cursor:pointer;font-size:.875rem}.mobile-link{display:block;padding:.75rem 1rem;color:#d1d5db;text-decoration:none;font-size:.9375rem;border-radius:.5rem}@media(min-width:768px){.mdf{display:flex!important}.mdh{display:none!important}}"}</style>
+      <div style={{ maxWidth: "80rem", margin: "0 auto", padding: "0 1.5rem" }}>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", height: "4rem" }}>
+          <Link href="/" style={{ display: "flex", alignItems: "center", gap: ".5rem", textDecoration: "none" }}>
+            <Image src="/logo.jpeg" alt="Raptor Webcraft" width={44} height={44} style={{ borderRadius: ".75rem", objectFit: "contain" }} />
+            <span style={{ fontWeight: 900, fontSize: "1.125rem" }}>
+              <span style={{ color: "#FF8C00" }}>Raptor</span>
+              <span style={{ color: "#fff" }}> Webcraft</span>
+            </span>
           </Link>
+          <div className="mdf" style={{ display: "none", alignItems: "center", gap: "1.5rem" }}>
+            {LINKS.map((l) => (
+              <Link key={l.href} href={l.href} className={"nav-link" + (pathname === l.href ? " active" : "")}>{l.label}</Link>
+            ))}
+            {user ? (
+              <div style={{ display: "flex", alignItems: "center", gap: ".75rem" }}>
+                <Link href={user.role === "admin" ? "/dashboard/admin" : "/dashboard/user"} className="nav-link" style={{ color: "#c084fc" }}>
+                  <FaTachometerAlt style={{ display: "inline", marginRight: ".25rem" }} />Dashboard
+                </Link>
+                <button onClick={logout} className="logout-btn"><FaSignOutAlt /> Logout</button>
+              </div>
+            ) : (
+              <Link href="/login" className="nav-btn">Login</Link>
+            )}
+          </div>
+          <button onClick={() => setOpen(!open)} className="mdh" style={{ background: "none", border: "none", color: "#fff", cursor: "pointer", padding: ".5rem" }}>
+            {open ? <FaTimes size={22} /> : <FaBars size={22} />}
+          </button>
         </div>
-
-        <button className="md:hidden text-white" onClick={() => setOpen(!open)}>
-          {open ? <FaTimes size={22}/> : <FaBars size={22}/>}
-        </button>
+        {open && (
+          <div style={{ padding: "1rem 0", borderTop: "1px solid rgba(91,44,159,.3)" }}>
+            {LINKS.map((l) => (
+              <Link key={l.href} href={l.href} className="mobile-link" onClick={() => setOpen(false)}>{l.label}</Link>
+            ))}
+            {user ? (
+              <button onClick={() => { logout(); setOpen(false); }} style={{ width: "100%", textAlign: "left", background: "none", border: "none", cursor: "pointer", color: "#f87171", padding: ".75rem 1rem", fontSize: ".9375rem" }}>
+                <FaSignOutAlt style={{ display: "inline", marginRight: ".5rem" }} /> Logout
+              </button>
+            ) : (
+              <Link href="/login" className="mobile-link" style={{ color: "#FF8C00" }} onClick={() => setOpen(false)}>Login</Link>
+            )}
+          </div>
+        )}
       </div>
-
-      {open && (
-        <div className="md:hidden px-6 pb-6 space-y-3" style={{ background:'rgba(13,6,24,0.98)' }}>
-          {links.map(l => (
-            <Link key={l.href} href={l.href} onClick={() => setOpen(false)}
-              className="block text-sm font-semibold py-2" style={{ color: pathname===l.href ? '#FF8C00' : '#e2e8f0' }}>
-              {l.label}
-            </Link>
-          ))}
-          <Link href="/login" onClick={() => setOpen(false)}
-            className="block text-center px-5 py-2 rounded-xl text-sm font-bold text-white"
-            style={{ background:'linear-gradient(135deg,#5B2C9F,#2563EB)' }}>
-            Login
-          </Link>
-        </div>
-      )}
     </nav>
   );
 }

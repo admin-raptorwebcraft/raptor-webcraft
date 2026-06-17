@@ -1,16 +1,37 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
-const MONGODB_URI = process.env.MONGODB_URI as string;
-if (!MONGODB_URI) throw new Error('MONGODB_URI not defined in .env.local');
+declare global {
+  var mongoose: { conn: mongoose.Connection | null; promise: Promise<mongoose.Connection> | null };
+}
 
-let cached = (global as any).mongoose || { conn: null, promise: null };
-(global as any).mongoose = cached;
+const MONGODB_URI = process.env.MONGODB_URI!;
 
-export async function connectToDatabase() {
+if (!MONGODB_URI) {
+  throw new Error("Please define MONGODB_URI in .env.local");
+}
+
+let cached = global.mongoose;
+if (!cached) {
+  cached = global.mongoose = { conn: null, promise: null };
+}
+
+export async function dbConnect(): Promise<mongoose.Connection> {
   if (cached.conn) return cached.conn;
   if (!cached.promise) {
-    cached.promise = mongoose.connect(MONGODB_URI, { bufferCommands: false });
+    cached.promise = mongoose.connect(MONGODB_URI, {
+      serverSelectionTimeoutMS: 10000,
+      socketTimeoutMS: 10000,
+      connectTimeoutMS: 10000,
+      maxPoolSize: 10,
+    }).then((m) => m.connection);
   }
-  cached.conn = await cached.promise;
+  try {
+    cached.conn = await cached.promise;
+  } catch (e) {
+    cached.promise = null;
+    throw e;
+  }
   return cached.conn;
 }
+
+export default dbConnect;

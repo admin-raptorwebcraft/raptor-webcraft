@@ -1,57 +1,62 @@
-'use client';
-import { motion } from 'framer-motion';
-import { FaBell, FaFolder, FaUser, FaSignOutAlt } from 'react-icons/fa';
-import { useRouter } from 'next/navigation';
-import toast from 'react-hot-toast';
+"use client";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { FaUser, FaDownload, FaBell, FaSignOutAlt, FaEnvelope, FaShieldAlt } from "react-icons/fa";
+import toast from "react-hot-toast";
 
 export default function UserDashboard() {
+  const [user, setUser] = useState<{name:string;email:string;role:string}|null>(null);
   const router = useRouter();
 
-  const handleLogout = async () => {
-    await fetch('/api/auth/logout', { method:'POST' });
-    toast.success('Logged out');
-    router.push('/login');
+  useEffect(() => {
+    const u = localStorage.getItem("rwt_user");
+    if (!u) { router.push("/login"); return; }
+    setUser(JSON.parse(u));
+  }, [router]);
+
+  const logout = async () => {
+    await fetch("/api/auth/logout", { method: "POST" });
+    localStorage.removeItem("rwt_token");
+    localStorage.removeItem("rwt_user");
+    toast.success("Logged out successfully!");
+    router.push("/login");
   };
 
-  const stats = [
-    { label:'Resources Available', value:'12', icon: FaFolder,  color:'#5B2C9F' },
-    { label:'New Notices',         value:'3',  icon: FaBell,    color:'#FF8C00' },
-    { label:'My Profile',          value:'1',  icon: FaUser,    color:'#2563EB' },
-  ];
+  if (!user) return <div style={{ minHeight:"100vh",background:"#0d0618",display:"flex",alignItems:"center",justifyContent:"center",color:"#fff" }}>Loading...</div>;
 
   return (
-    <div style={{ background:'#0d0618' }} className="min-h-screen">
-      <div className="px-6 py-6 flex items-center justify-between" style={{ background:'linear-gradient(135deg,#1a0a2e,#3D1A5C)', borderBottom:'1px solid rgba(91,44,159,0.3)' }}>
-        <div>
-          <h1 className="text-2xl font-black text-white">My <span style={{ color:'#FF8C00' }}>Dashboard</span></h1>
-          <p className="text-gray-400 text-sm">Welcome to Raptor Webcraft</p>
+    <div style={{ minHeight:"100vh", background:"#0d0618", color:"#fbfbff", paddingTop:"4rem" }}>
+      <div style={{ background:"rgba(26,10,46,0.8)", borderBottom:"1px solid rgba(91,44,159,0.3)", padding:"1.5rem" }}>
+        <div style={{ maxWidth:"72rem", margin:"0 auto", display:"flex", alignItems:"center", justifyContent:"space-between", flexWrap:"wrap", gap:"1rem" }}>
+          <div>
+            <h1 style={{ fontWeight:900, fontSize:"1.5rem" }}>My <span style={{ color:"#FF8C00" }}>Dashboard</span></h1>
+            <p style={{ color:"#9ca3af", fontSize:".875rem" }}>Welcome back, {user.name}!</p>
+          </div>
+          <button onClick={logout} style={{ display:"flex", alignItems:"center", gap:".5rem", padding:".625rem 1.25rem", borderRadius:".75rem", border:"1px solid rgba(91,44,159,0.4)", background:"transparent", color:"#fff", cursor:"pointer" }}>
+            <FaSignOutAlt /> Logout
+          </button>
         </div>
-        <button onClick={handleLogout} className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold"
-          style={{ background:'rgba(240,68,56,0.15)', color:'#f04438', border:'1px solid rgba(240,68,56,0.3)' }}>
-          <FaSignOutAlt /> Logout
-        </button>
       </div>
-
-      <div className="max-w-4xl mx-auto px-6 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-          {stats.map((s, i) => (
-            <motion.div key={s.label} initial={{ opacity:0, y:20 }} animate={{ opacity:1, y:0 }} transition={{ delay: i*0.1 }}
-              className="p-6 rounded-2xl text-center" style={{ background:'linear-gradient(135deg,#1e0a3c,#2d1257)', border:`1px solid ${s.color}30` }}>
-              <s.icon className="text-3xl mx-auto mb-3" style={{ color: s.color }} />
-              <div className="text-2xl font-black text-white">{s.value}</div>
-              <div className="text-gray-400 text-sm mt-1">{s.label}</div>
-            </motion.div>
+      <div style={{ maxWidth:"72rem", margin:"0 auto", padding:"2rem 1.5rem" }}>
+        <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(200px,1fr))", gap:"1.5rem", marginBottom:"2rem" }}>
+          {[{icon:FaDownload,label:"Resources",value:"6",color:"#FF8C00"},{icon:FaBell,label:"Notices",value:"6",color:"#5B2C9F"},{icon:FaShieldAlt,label:"Account Type",value:"USER",color:"#2563EB"},{icon:FaUser,label:"Profile",value:"Active",color:"#10b981"}].map(s => (
+            <div key={s.label} style={{ background:"rgba(26,10,46,0.6)", border:"1px solid rgba(91,44,159,0.3)", borderRadius:"1rem", padding:"1.5rem" }}>
+              <s.icon style={{ fontSize:"1.5rem", color:s.color, marginBottom:".5rem" }} />
+              <div style={{ fontSize:"1.5rem", fontWeight:900, color:"#fff" }}>{s.value}</div>
+              <div style={{ color:"#9ca3af", fontSize:".875rem" }}>{s.label}</div>
+            </div>
           ))}
         </div>
-        <div className="p-6 rounded-2xl" style={{ background:'linear-gradient(135deg,#1e0a3c,#2d1257)', border:'1px solid rgba(91,44,159,0.3)' }}>
-          <h2 className="text-lg font-bold text-white mb-4">Quick Links</h2>
-          <div className="flex flex-wrap gap-3">
-            {[['Resources','/resources','#5B2C9F'],['Notices','/notices','#FF8C00']].map(([label,href,color])=>(
-              <a key={label} href={href} className="px-5 py-2.5 rounded-xl text-sm font-semibold text-white transition-all hover:opacity-80"
-                style={{ background: color }}>
-                {label}
-              </a>
-            ))}
+        <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(280px,1fr))", gap:"1.5rem" }}>
+          <div style={{ background:"rgba(26,10,46,0.5)", border:"1px solid rgba(91,44,159,0.2)", borderRadius:"1rem", padding:"1.5rem" }}>
+            <h3 style={{ color:"#fff", fontWeight:700, marginBottom:"1rem" }}>My Profile</h3>
+            <p style={{ color:"#9ca3af", fontSize:".9375rem", marginBottom:".5rem" }}><FaUser style={{ display:"inline", marginRight:".5rem", color:"#FF8C00" }} />{user.name}</p>
+            <p style={{ color:"#9ca3af", fontSize:".9375rem" }}><FaEnvelope style={{ display:"inline", marginRight:".5rem", color:"#FF8C00" }} />{user.email}</p>
+          </div>
+          <div style={{ background:"rgba(26,10,46,0.5)", border:"1px solid rgba(91,44,159,0.2)", borderRadius:"1rem", padding:"1.5rem" }}>
+            <h3 style={{ color:"#fff", fontWeight:700, marginBottom:"1rem" }}>Contact Support</h3>
+            <p style={{ color:"#9ca3af", fontSize:".875rem", lineHeight:1.7 }}>Need help? Contact Raptor Webcraft support team.</p>
+            <a href="mailto:rwct.raptorwebcraft@gmail.com" style={{ display:"inline-block", marginTop:"1rem", padding:".5rem 1rem", borderRadius:".75rem", background:"linear-gradient(to right,#FF8C00,#5B2C9F)", color:"#fff", textDecoration:"none", fontSize:".875rem", fontWeight:600 }}>Send Email</a>
           </div>
         </div>
       </div>

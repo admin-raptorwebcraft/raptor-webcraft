@@ -1,22 +1,26 @@
-import { NextResponse } from 'next/server';
-import type { NextRequest } from 'next/server';
-import { verifyToken } from '@/lib/auth';
+import { NextRequest, NextResponse } from "next/server";
+import { jwtVerify } from "jose";
 
-const PUBLIC_PATHS = ['/', '/about', '/resources', '/notices', '/login'];
-
-export function middleware(req: NextRequest) {
+export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
-  if (PUBLIC_PATHS.some(p => pathname === p)) return NextResponse.next();
-  const token = req.cookies.get('raptor_token')?.value;
-  if (!token) return NextResponse.redirect(new URL('/login', req.url));
+  const isAdmin = pathname.startsWith("/dashboard/admin");
+  const isUser  = pathname.startsWith("/dashboard/user");
+  if (!isAdmin && !isUser) return NextResponse.next();
+
+  const token = req.cookies.get("rwt_token")?.value;
+  if (!token) return NextResponse.redirect(new URL("/login", req.url));
+
   try {
-    const decoded: any = verifyToken(token);
-    if (pathname.startsWith('/dashboard/admin') && decoded.role !== 'admin')
-      return NextResponse.redirect(new URL('/dashboard/user', req.url));
+    const secret = new TextEncoder().encode(process.env.JWT_SECRET!);
+    const { payload } = await jwtVerify(token, secret);
+    if (isAdmin && payload.role !== "admin")
+      return NextResponse.redirect(new URL("/dashboard/user", req.url));
+    if (isUser && payload.role === "admin")
+      return NextResponse.redirect(new URL("/dashboard/admin", req.url));
     return NextResponse.next();
   } catch {
-    return NextResponse.redirect(new URL('/login', req.url));
+    return NextResponse.redirect(new URL("/login", req.url));
   }
 }
 
-export const config = { matcher: ['/dashboard/:path*', '/api/users/:path*'] };
+export const config = { matcher: ["/dashboard/:path*"] };

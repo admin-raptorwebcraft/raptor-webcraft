@@ -1,17 +1,18 @@
-import jwt from 'jsonwebtoken';
-import { cookies } from 'next/headers';
+import jwt from "jsonwebtoken";
+import { NextRequest } from "next/server";
 
-const JWT_SECRET = process.env.JWT_SECRET as string;
+const SECRET = process.env.JWT_SECRET!;
 
-export function signToken(payload: object): string {
-  return jwt.sign(payload, JWT_SECRET, { expiresIn: process.env.JWT_EXPIRES_IN || '7d' });
+export function signToken(payload: object, expiresIn = "7d") {
+  return jwt.sign(payload, SECRET, { expiresIn } as jwt.SignOptions);
 }
 
-export function verifyToken(token: string): any {
-  return jwt.verify(token, JWT_SECRET);
+export function verifyToken(token: string) {
+  return jwt.verify(token, SECRET);
 }
 
-export function getTokenFromCookies() {
-  const cookieStore = cookies();
-  return cookieStore.get('raptor_token')?.value ?? null;
+export function getTokenFromRequest(req: NextRequest) {
+  return req.cookies.get("rwt_token")?.value ||
+         req.headers.get("authorization")?.replace("Bearer ", "") ||
+         null;
 }

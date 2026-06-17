@@ -1,105 +1,64 @@
-'use client';
-import { useState } from 'react';
-import { motion } from 'framer-motion';
-import { FaBell, FaSearch, FaThumbTack, FaExclamationTriangle, FaInfoCircle, FaCheckCircle } from 'react-icons/fa';
+"use client";
+import { useState } from "react";
+import { FaBell, FaExclamationTriangle, FaInfoCircle, FaCheckCircle, FaThumbtack, FaSearch } from "react-icons/fa";
 
-const seedNotices = [
-  { id:1, title:'System Maintenance – 15 Jan 2025',       type:'Important', pinned:true,  date:'2025-01-10', body:'Scheduled maintenance from 2 AM–4 AM UTC. Services may be temporarily unavailable.' },
-  { id:2, title:'New IT Advisory Service Launched',       type:'Update',    pinned:true,  date:'2025-01-08', body:'Raptor Webcraft has launched dedicated IT advisory packages for SMEs. Contact us to learn more.' },
-  { id:3, title:'Office Closed – Public Holiday',         type:'General',   pinned:false, date:'2025-01-06', body:'Our offices will be closed on the upcoming public holiday. Support is available via email.' },
-  { id:4, title:'Security Update: Please Reset Password', type:'Urgent',    pinned:false, date:'2025-01-04', body:'A proactive security update requires all users to reset their passwords before next login.' },
-  { id:5, title:'Q1 2025 Newsletter',                     type:'General',   pinned:false, date:'2025-01-02', body:'Read our Q1 newsletter covering new projects, team updates, and upcoming events.' },
+const SEED = [
+  { id:1, type:"urgent",    title:"Scheduled Maintenance Notice",             date:"2024-06-15", pinned:true,  content:"Our servers will undergo scheduled maintenance on June 20, 2024 from 2:00 AM to 4:00 AM NST." },
+  { id:2, type:"important", title:"New Services Launched",                    date:"2024-06-10", pinned:true,  content:"We are excited to announce the launch of our new IT Advisory and Cloud Migration services." },
+  { id:3, type:"general",   title:"Office Hours Update",                     date:"2024-06-08", pinned:false, content:"Our office hours have been updated. We are now available Monday to Saturday, 9 AM to 6 PM NST." },
+  { id:4, type:"update",    title:"Website Portfolio Updated",                date:"2024-06-05", pinned:false, content:"We have updated our portfolio with 10 new project case studies. Visit our resources section to view them." },
+  { id:5, type:"general",   title:"Internship Opportunities Available",       date:"2024-06-01", pinned:false, content:"Raptor Webcraft is now accepting applications for summer internships in web development and IT consulting." },
+  { id:6, type:"important", title:"Security Advisory — Update Your Systems", date:"2024-05-28", pinned:false, content:"We advise all clients to update their systems following the recent security advisories published by CERT." },
 ];
 
-const typeStyle: Record<string, { color:string; bg:string; icon:React.ElementType }> = {
-  General:   { color:'#60A5FA', bg:'rgba(37,99,235,0.15)',   icon: FaInfoCircle },
-  Important: { color:'#FF8C00', bg:'rgba(255,140,0,0.15)',   icon: FaExclamationTriangle },
-  Urgent:    { color:'#f04438', bg:'rgba(240,68,56,0.15)',   icon: FaExclamationTriangle },
-  Update:    { color:'#17b26a', bg:'rgba(23,178,106,0.15)',  icon: FaCheckCircle },
+const TYPE_STYLE: Record<string,{color:string;bg:string;label:string}> = {
+  urgent:    { color:"#ef4444", bg:"rgba(239,68,68,0.1)",    label:"URGENT" },
+  important: { color:"#FF8C00", bg:"rgba(255,140,0,0.1)",   label:"IMPORTANT" },
+  update:    { color:"#2563EB", bg:"rgba(37,99,235,0.1)",   label:"UPDATE" },
+  general:   { color:"#10b981", bg:"rgba(16,185,129,0.1)",  label:"GENERAL" },
 };
 
-const types = ['All', 'General', 'Important', 'Urgent', 'Update'];
-
 export default function NoticesPage() {
-  const [search, setSearch] = useState('');
-  const [type, setType] = useState('All');
-
-  const pinned = seedNotices.filter(n => n.pinned);
-  const filtered = seedNotices.filter(n =>
-    !n.pinned &&
-    (type === 'All' || n.type === type) &&
-    n.title.toLowerCase().includes(search.toLowerCase())
-  );
-
+  const [search, setSearch] = useState("");
+  const [filter, setFilter] = useState("all");
+  const filtered = SEED.filter(n =>
+    (filter === "all" || n.type === filter) &&
+    (n.title.toLowerCase().includes(search.toLowerCase()) || n.content.toLowerCase().includes(search.toLowerCase()))
+  ).sort((a,b) => (b.pinned ? 1 : 0) - (a.pinned ? 1 : 0));
   return (
-    <div style={{ background:'#0d0618' }} className="min-h-screen pb-20">
-      <section className="py-24 px-6 text-center" style={{ background:'linear-gradient(135deg,#1a0a2e,#3D1A5C,#2563EB)' }}>
-        <h1 className="text-5xl font-black text-white mb-4"><span style={{ color:'#FF8C00' }}>Notices</span> & Announcements</h1>
-        <p className="text-gray-300 max-w-xl mx-auto">Stay up to date with the latest company news, updates, and alerts.</p>
-      </section>
-
-      <section className="max-w-3xl mx-auto px-6 mt-12">
-        {/* Pinned */}
-        {pinned.map(n => {
-          const s = typeStyle[n.type];
-          const Icon = s.icon;
-          return (
-            <div key={n.id} className="p-5 rounded-2xl mb-4 flex gap-4 items-start"
-              style={{ background: s.bg, border:`1px solid ${s.color}40` }}>
-              <FaThumbTack style={{ color: s.color }} className="mt-1 shrink-0" />
-              <div>
-                <div className="flex items-center gap-2 mb-1">
-                  <span className="font-bold text-white">{n.title}</span>
-                  <span className="text-xs px-2 py-0.5 rounded-full font-medium" style={{ background: s.bg, color: s.color }}>{n.type}</span>
-                </div>
-                <p className="text-gray-400 text-sm">{n.body}</p>
-                <p className="text-xs text-gray-600 mt-1">{n.date}</p>
-              </div>
-            </div>
-          );
-        })}
-
-        {/* Filters */}
-        <div className="flex flex-col md:flex-row gap-4 my-8">
-          <div className="relative flex-1">
-            <FaSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
-            <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search notices..."
-              className="w-full pl-12 pr-4 py-3 rounded-xl text-white outline-none"
-              style={{ background:'rgba(255,255,255,0.05)', border:'1px solid rgba(91,44,159,0.5)' }} />
-          </div>
-          <div className="flex flex-wrap gap-2">
-            {types.map(t => (
-              <button key={t} onClick={() => setType(t)}
-                className="px-3 py-2 rounded-xl text-xs font-semibold transition-all"
-                style={{ background: type===t ? '#FF8C00' : 'rgba(91,44,159,0.2)', color: type===t ? '#fff' : '#ccc', border:'1px solid rgba(91,44,159,0.4)' }}>
-                {t}
-              </button>
-            ))}
-          </div>
+    <div style={{ background: "#0d0618", color: "#fbfbff", minHeight: "100vh", paddingTop: "5rem" }}>
+      <section style={{ padding: "3rem 1.5rem 2rem", textAlign: "center" }}>
+        <h1 style={{ fontSize: "clamp(2rem,5vw,3rem)", fontWeight: 900, marginBottom: "1rem" }}>Notices & <span style={{ color: "#FF8C00" }}>Announcements</span></h1>
+        <p style={{ color: "#9ca3af", maxWidth: "36rem", margin: "0 auto 2rem" }}>Stay updated with the latest notices and announcements from Raptor Webcraft Technologies.</p>
+        <div style={{ maxWidth: "36rem", margin: "0 auto", position: "relative" }}>
+          <FaSearch style={{ position: "absolute", left: "1rem", top: "50%", transform: "translateY(-50%)", color: "#6b7280" }} />
+          <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search notices..." style={{ width: "100%", padding: ".75rem 1rem .75rem 2.75rem", background: "rgba(26,10,46,0.6)", border: "1px solid rgba(91,44,159,0.4)", borderRadius: ".875rem", color: "#fff", fontSize: ".9375rem", boxSizing: "border-box" }} />
         </div>
-
-        {/* List */}
-        <div className="space-y-4">
-          {filtered.map((n, i) => {
-            const s = typeStyle[n.type];
-            const Icon = s.icon;
+      </section>
+      <section style={{ padding: "0 1.5rem 4rem", maxWidth: "64rem", margin: "0 auto" }}>
+        <div style={{ display: "flex", gap: ".5rem", flexWrap: "wrap", justifyContent: "center", marginBottom: "2rem" }}>
+          {["all","urgent","important","update","general"].map(f => (
+            <button key={f} onClick={() => setFilter(f)} style={{ padding: ".5rem 1.25rem", borderRadius: "999px", border: "1px solid", borderColor: filter === f ? "#FF8C00" : "rgba(91,44,159,0.4)", background: filter === f ? "rgba(255,140,0,0.15)" : "transparent", color: filter === f ? "#FF8C00" : "#9ca3af", cursor: "pointer", fontWeight: 600, fontSize: ".875rem", textTransform: "capitalize" }}>{f}</button>
+          ))}
+        </div>
+        <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+          {filtered.map(n => {
+            const ts = TYPE_STYLE[n.type];
             return (
-              <motion.div key={n.id} initial={{ opacity:0, y:10 }} animate={{ opacity:1, y:0 }} transition={{ delay: i*0.05 }}
-                className="p-5 rounded-2xl" style={{ background:'linear-gradient(135deg,#1e0a3c,#2d1257)', border:'1px solid rgba(91,44,159,0.35)' }}>
-                <div className="flex items-center gap-3 mb-2">
-                  <Icon style={{ color: s.color }} />
-                  <span className="font-bold text-white flex-1">{n.title}</span>
-                  <span className="text-xs px-2 py-0.5 rounded-full" style={{ background: s.bg, color: s.color }}>{n.type}</span>
+              <div key={n.id} style={{ background: "rgba(26,10,46,0.6)", border: n.pinned ? "1px solid rgba(255,140,0,0.4)" : "1px solid rgba(91,44,159,0.3)", borderRadius: "1rem", padding: "1.5rem" }}>
+                <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", flexWrap: "wrap", gap: "1rem", marginBottom: ".75rem" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: ".75rem" }}>
+                    {n.pinned && <FaThumbtack style={{ color: "#FF8C00" }} />}
+                    <span style={{ fontSize: ".75rem", fontWeight: 700, color: ts.color, background: ts.bg, padding: ".25rem .625rem", borderRadius: "999px" }}>{ts.label}</span>
+                    <h3 style={{ color: "#fff", fontWeight: 700, fontSize: "1rem" }}>{n.title}</h3>
+                  </div>
+                  <span style={{ color: "#6b7280", fontSize: ".8125rem" }}>{n.date}</span>
                 </div>
-                <p className="text-gray-400 text-sm">{n.body}</p>
-                <p className="text-xs text-gray-600 mt-2">{n.date}</p>
-              </motion.div>
+                <p style={{ color: "#9ca3af", lineHeight: 1.6, fontSize: ".9375rem" }}>{n.content}</p>
+              </div>
             );
           })}
         </div>
-        {filtered.length === 0 && (
-          <p className="text-center text-gray-500 py-16">No notices found.</p>
-        )}
       </section>
     </div>
   );

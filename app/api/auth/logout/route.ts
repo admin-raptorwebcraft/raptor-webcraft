@@ -1,6 +1,7 @@
-import { NextResponse } from 'next/server';
+import { NextResponse } from "next/server";
+
 export async function POST() {
-  const res = NextResponse.json({ message: 'Logged out' });
-  res.cookies.delete('raptor_token');
+  const res = NextResponse.json({ message: "Logged out" });
+  res.cookies.set("rwt_token", "", { maxAge: 0, path: "/" });
   return res;
 }
