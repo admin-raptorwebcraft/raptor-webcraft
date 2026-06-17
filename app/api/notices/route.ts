@@ -9,8 +9,10 @@ export async function GET() {
   try {
     await dbConnect();
     const notices = await Notice.find({ active: true }).sort({ pinned: -1, createdAt: -1 }).lean();
-    return NextResponse.json({ notices });
-  } catch (e: any) { return NextResponse.json({ error: e.message }, { status: 500 }); }
+    return NextResponse.json({ success: true, notices });
+  } catch (e: any) {
+    return NextResponse.json({ error: e.message }, { status: 500 });
+  }
 }
 
 export async function POST(req: NextRequest) {
@@ -18,6 +20,8 @@ export async function POST(req: NextRequest) {
     await dbConnect();
     const body = await req.json();
     const notice = await Notice.create(body);
-    return NextResponse.json({ notice }, { status: 201 });
-  } catch (e: any) { return NextResponse.json({ error: e.message }, { status: 500 }); }
+    return NextResponse.json({ success: true, notice }, { status: 201 });
+  } catch (e: any) {
+    return NextResponse.json({ error: e.message }, { status: 500 });
+  }
 }

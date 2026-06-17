@@ -1,28 +1,33 @@
 import mongoose from "mongoose";
 
+export const runtime = "nodejs";
+
 declare global {
   var _mongooseConn: typeof mongoose | null;
   var _mongoosePromise: Promise<typeof mongoose> | null;
 }
 
-if (!global._mongooseConn) { global._mongooseConn = null; }
-if (!global._mongoosePromise) { global._mongoosePromise = null; }
+const MONGODB_URI = process.env.MONGODB_URI;
 
-export async function dbConnect(): Promise<typeof mongoose> {
-  if (global._mongooseConn && global._mongooseConn.connection.readyState === 1) {
-    return global._mongooseConn;
+export default async function dbConnect(): Promise<typeof mongoose> {
+  if (!MONGODB_URI) {
+    throw new Error("MONGODB_URI is not defined in environment variables. Please add it to Vercel → Settings → Environment Variables.");
   }
-  const uri = process.env.MONGODB_URI;
-  if (!uri) throw new Error("MONGODB_URI environment variable is not set");
 
-  if (!global._mongoosePromise) {
-    global._mongoosePromise = mongoose.connect(uri, {
-      serverSelectionTimeoutMS: 10000,
-      socketTimeoutMS: 30000,
-      maxPoolSize: 10,
-    });
-  }
-  global._mongooseConn = await global._mongoosePromise;
-  return global._mongooseConn;
+  if (global._mongooseConn) return global._mongooseConn;
+  if (global._mongoosePromise) return global._mongoosePromise;
+
+  const opts = {
+    serverSelectionTimeoutMS: 10000,
+    connectTimeoutMS: 10000,
+    socketTimeoutMS: 30000,
+    bufferCommands: false,
+  };
+
+  global._mongoosePromise = mongoose.connect(MONGODB_URI, opts).then((m) => {
+    global._mongooseConn = m;
+    return m;
+  });
+
+  return global._mongoosePromise;
 }
-export default dbConnect;

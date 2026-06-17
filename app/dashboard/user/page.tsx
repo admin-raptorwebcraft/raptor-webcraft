@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function UserDashboard() {
   const [user, setUser] = useState<any>(null);
@@ -12,89 +13,88 @@ export default function UserDashboard() {
       if (!u) { router.push("/login"); return; }
       setUser(JSON.parse(u));
     } catch { router.push("/login"); }
-  }, []);
+  }, [router]);
 
   const logout = async () => {
     try { await fetch("/api/auth/logout", { method: "POST" }); } catch {}
-    localStorage.clear();
+    localStorage.removeItem("rwt_token");
+    localStorage.removeItem("rwt_user");
     router.push("/login");
   };
 
   if (!user) return (
     <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "#0d0618" }}>
-      <div style={{ width: "40px", height: "40px", border: "3px solid rgba(91,44,159,.3)",
-        borderTop: "3px solid #FF8C00", borderRadius: "50%", animation: "spin 1s linear infinite" }} />
+      <div style={{ color: "#FF8C00" }}>Loading...</div>
     </div>
   );
 
-  const quickStats = [
-    { label: "Resources Available", value: "6",  icon: "📚", color: "#3b82f6" },
-    { label: "Active Notices",       value: "5",  icon: "📢", color: "#f59e0b" },
-    { label: "New This Month",       value: "3",  icon: "🆕", color: "#10b981" },
-    { label: "Account Status",       value: "Active", icon: "✅", color: "#8b5cf6" },
-  ];
-
   return (
     <div style={{ minHeight: "100vh", background: "#0d0618", paddingTop: "4rem" }}>
-      <div style={{ maxWidth: "75rem", margin: "0 auto", padding: "2rem 1.5rem" }}>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center",
-          flexWrap: "wrap", gap: "1rem", marginBottom: "2rem" }}>
+      <div style={{ maxWidth: "64rem", margin: "0 auto", padding: "2rem 1.5rem" }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "2rem" }}>
           <div>
-            <h1 style={{ fontSize: "1.75rem", fontWeight: 900, color: "#fff" }}>My Dashboard</h1>
+            <h1 style={{ fontSize: "1.875rem", fontWeight: 800, color: "#fff" }}>My Dashboard</h1>
             <p style={{ color: "#9ca3af" }}>Welcome back, {user.name}</p>
           </div>
-          <button onClick={logout} style={{ padding: ".625rem 1.25rem", borderRadius: ".75rem",
-            background: "none", border: "1px solid rgba(239,68,68,.4)", color: "#ef4444",
+          <button onClick={logout} style={{ padding: ".625rem 1.25rem", background: "rgba(240,68,56,0.15)",
+            border: "1px solid rgba(240,68,56,0.3)", borderRadius: ".75rem", color: "#f04438",
             cursor: "pointer", fontWeight: 600 }}>Logout</button>
         </div>
 
-        <div style={{ background: "linear-gradient(to right,rgba(255,140,0,.1),rgba(91,44,159,.1))",
-          border: "1px solid rgba(91,44,159,.3)", borderRadius: "1.25rem", padding: "2rem", marginBottom: "2rem",
-          display: "flex", alignItems: "center", gap: "1.5rem", flexWrap: "wrap" }}>
-          <div style={{ width: "64px", height: "64px", borderRadius: "50%",
-            background: "linear-gradient(to bottom right,#FF8C00,#5B2C9F)",
-            display: "flex", alignItems: "center", justifyContent: "center",
-            fontSize: "1.75rem", fontWeight: 900, color: "#fff", flexShrink: 0 }}>
-            {user.name.charAt(0).toUpperCase()}
-          </div>
-          <div>
-            <h2 style={{ fontSize: "1.25rem", fontWeight: 900, color: "#fff", marginBottom: ".25rem" }}>{user.name}</h2>
-            <p style={{ color: "#9ca3af", fontSize: ".875rem", marginBottom: ".5rem" }}>{user.email}</p>
-            <span style={{ padding: ".25rem .75rem", borderRadius: "2rem", fontSize: ".75rem", fontWeight: 600,
-              background: "rgba(91,44,159,.3)", color: "#c084fc" }}>{user.role}</span>
+        <div style={{ padding: "1.5rem", background: "linear-gradient(135deg,rgba(255,140,0,0.15),rgba(91,44,159,0.15))",
+          border: "1px solid rgba(255,140,0,0.3)", borderRadius: "1.25rem", marginBottom: "2rem" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+            <div style={{ width: "4rem", height: "4rem", borderRadius: "50%",
+              background: "linear-gradient(to bottom right,#FF8C00,#5B2C9F)",
+              display: "flex", alignItems: "center", justifyContent: "center",
+              fontSize: "1.5rem", fontWeight: 700, color: "#fff" }}>
+              {user.name.charAt(0)}
+            </div>
+            <div>
+              <h2 style={{ color: "#fff", fontWeight: 700 }}>{user.name}</h2>
+              <p style={{ color: "#9ca3af", fontSize: ".875rem" }}>{user.email}</p>
+              <span style={{ padding: ".25rem .75rem", background: "rgba(96,165,250,0.15)",
+                borderRadius: "2rem", color: "#60a5fa", fontSize: ".75rem", fontWeight: 700 }}>
+                {user.role}
+              </span>
+            </div>
           </div>
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(200px,1fr))", gap: "1.25rem", marginBottom: "2rem" }}>
-          {quickStats.map((s) => (
-            <div key={s.label} style={{ background: "rgba(26,10,46,.8)", border: "1px solid rgba(91,44,159,.3)",
-              borderRadius: "1.25rem", padding: "1.5rem" }}>
-              <div style={{ fontSize: "1.75rem", marginBottom: ".75rem" }}>{s.icon}</div>
-              <div style={{ fontSize: "1.75rem", fontWeight: 900, color: s.color, marginBottom: ".25rem" }}>{s.value}</div>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "1.5rem", marginBottom: "2rem" }}>
+          {[
+            { label: "Resources Available", value: "6",  icon: "📚", link: "/resources" },
+            { label: "Active Notices",       value: "5",  icon: "📢", link: "/notices"   },
+            { label: "Company Email",        value: "✉️", icon: "📧", link: null         },
+            { label: "Support Phone",        value: "📞", icon: "📱", link: null         },
+          ].map((s) => (
+            <div key={s.label} style={{ padding: "1.5rem", background: "rgba(26,10,46,0.6)",
+              border: "1px solid rgba(91,44,159,0.3)", borderRadius: "1rem" }}>
+              <div style={{ fontSize: "1.875rem", marginBottom: ".5rem" }}>{s.icon}</div>
+              <div style={{ fontSize: "1.5rem", fontWeight: 800, color: "#FF8C00" }}>{s.value}</div>
               <div style={{ color: "#9ca3af", fontSize: ".875rem" }}>{s.label}</div>
+              {s.link && (
+                <Link href={s.link} style={{ display: "inline-block", marginTop: ".5rem",
+                  color: "#c084fc", fontSize: ".8125rem", textDecoration: "none" }}>View →</Link>
+              )}
             </div>
           ))}
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(280px,1fr))", gap: "1.5rem" }}>
-          <div style={{ background: "rgba(26,10,46,.8)", border: "1px solid rgba(91,44,159,.3)",
-            borderRadius: "1.25rem", padding: "1.75rem" }}>
-            <h3 style={{ color: "#FF8C00", fontWeight: 700, marginBottom: "1rem" }}>📢 Recent Notices</h3>
-            {["System Maintenance - Important","Security Alert - Urgent","New Services Launch - Update"].map((n) => (
-              <div key={n} style={{ padding: ".75rem", borderRadius: ".75rem", marginBottom: ".75rem",
-                background: "rgba(91,44,159,.1)", border: "1px solid rgba(91,44,159,.2)" }}>
-                <p style={{ color: "#d1d5db", fontSize: ".875rem" }}>{n}</p>
-              </div>
-            ))}
-          </div>
-          <div style={{ background: "rgba(26,10,46,.8)", border: "1px solid rgba(91,44,159,.3)",
-            borderRadius: "1.25rem", padding: "1.75rem" }}>
-            <h3 style={{ color: "#FF8C00", fontWeight: 700, marginBottom: "1rem" }}>📚 Recent Resources</h3>
-            {["Web Dev Best Practices Guide","IT Security Checklist","Cloud Migration Playbook"].map((r) => (
-              <div key={r} style={{ padding: ".75rem", borderRadius: ".75rem", marginBottom: ".75rem",
-                background: "rgba(91,44,159,.1)", border: "1px solid rgba(91,44,159,.2)" }}>
-                <p style={{ color: "#d1d5db", fontSize: ".875rem" }}>{r}</p>
-              </div>
+        <div style={{ padding: "1.5rem", background: "rgba(26,10,46,0.6)", border: "1px solid rgba(91,44,159,0.3)", borderRadius: "1rem" }}>
+          <h3 style={{ color: "#FF8C00", fontWeight: 700, marginBottom: "1rem" }}>Quick Links</h3>
+          <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
+            {[
+              { href: "/resources", label: "Browse Resources", color: "#FF8C00" },
+              { href: "/notices",   label: "View Notices",     color: "#c084fc" },
+              { href: "/about",     label: "About Us",         color: "#60a5fa" },
+            ].map((l) => (
+              <Link key={l.href} href={l.href} style={{
+                padding: ".625rem 1.25rem", background: "rgba(13,6,24,0.6)",
+                border: "1px solid rgba(91,44,159,0.3)", borderRadius: ".75rem",
+                color: l.color, textDecoration: "none", fontWeight: 600, fontSize: ".875rem" }}>
+                {l.label}
+              </Link>
             ))}
           </div>
         </div>

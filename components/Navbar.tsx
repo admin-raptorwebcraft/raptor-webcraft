@@ -47,8 +47,7 @@ export default function Navbar() {
         .nl:hover, .nl-a { color: #FF8C00 !important; }
         .nb { padding: .5rem 1.25rem; border-radius: .75rem; background: linear-gradient(to right,#FF8C00,#5B2C9F); color: #fff; font-weight: 600; text-decoration: none; font-size: .875rem; }
         .lb { display: flex; align-items: center; gap: .5rem; padding: .5rem 1rem; border-radius: .75rem; border: 1px solid rgba(91,44,159,.6); background: rgba(26,10,46,.6); color: #fff; cursor: pointer; font-size: .875rem; }
-        .ml { display: block; padding: .75rem 1rem; color: #d1d5db; text-decoration: none; font-size: .9375rem; border-radius: .5rem; transition: background .2s; }
-        .ml:hover { background: rgba(91,44,159,.2); color: #FF8C00; }
+        .ml { display: block; padding: .75rem 1rem; color: #d1d5db; text-decoration: none; font-size: .9375rem; border-radius: .5rem; }
         @media(min-width:768px) { .dn { display: flex !important; } .hb { display: none !important; } }
       `}</style>
       <div style={{ maxWidth: "80rem", margin: "0 auto", padding: "0 1.5rem" }}>

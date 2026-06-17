@@ -1,12 +1,13 @@
-import { cookies } from "next/headers";
-import { jwtVerify } from "jose";
+import jwt from "jsonwebtoken";
 
-export async function getServerSession() {
-  try {
-    const token = cookies().get("rwt_token")?.value;
-    if (!token) return null;
-    const secret = new TextEncoder().encode(process.env.JWT_SECRET || "fallback");
-    const { payload } = await jwtVerify(token, secret);
-    return payload as { id: string; name: string; email: string; role: string };
-  } catch { return null; }
+export function signToken(payload: object): string {
+  const secret = process.env.JWT_SECRET;
+  if (!secret) throw new Error("JWT_SECRET not set");
+  return jwt.sign(payload, secret, { expiresIn: process.env.JWT_EXPIRES_IN || "7d" });
+}
+
+export function verifyToken(token: string): any {
+  const secret = process.env.JWT_SECRET;
+  if (!secret) throw new Error("JWT_SECRET not set");
+  return jwt.verify(token, secret);
 }

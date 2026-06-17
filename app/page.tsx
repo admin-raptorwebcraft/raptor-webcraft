@@ -1,69 +1,58 @@
 "use client";
 import Link from "next/link";
-import Image from "next/image";
 
-const services = [
-  { icon: "🌐", title: "Website Development", desc: "Modern, responsive websites built with cutting-edge tech." },
-  { icon: "💼", title: "IT Consulting",        desc: "Strategic IT guidance to optimize your business operations." },
-  { icon: "🔒", title: "Tech Advisory",        desc: "Expert advice on technology decisions and digital strategy." },
-  { icon: "🎨", title: "UI/UX Design",         desc: "Beautiful, intuitive interfaces that engage your users." },
-  { icon: "☁️", title: "Cloud Solutions",      desc: "Scalable cloud infrastructure for modern businesses." },
-  { icon: "📱", title: "Mobile Apps",           desc: "Cross-platform mobile applications for iOS and Android." },
+const SERVICES = [
+  { icon: "🌐", title: "Website Development", desc: "Modern, responsive websites built with cutting-edge technologies." },
+  { icon: "💡", title: "IT Consulting", desc: "Strategic IT advice to drive business growth and efficiency." },
+  { icon: "📋", title: "Advisory Services", desc: "Expert guidance on digital transformation and tech adoption." },
+  { icon: "⚙️", title: "Tech Solutions", desc: "Custom software solutions tailored to your business needs." },
 ];
 
-const stats = [
+const STATS = [
   { value: "50+", label: "Projects Delivered" },
   { value: "30+", label: "Happy Clients" },
   { value: "5+",  label: "Years Experience" },
-  { value: "24/7", label: "Support Available" },
+  { value: "24/7", label: "Support" },
 ];
-
-const tech = ["Next.js","React","Node.js",".NET","MongoDB","TypeScript","Tailwind CSS","AWS"];
 
 export default function HomePage() {
   return (
     <div style={{ paddingTop: "4rem" }}>
-      <style>{`
-        .sc { transition: transform .2s, box-shadow .2s; }
-        .sc:hover { transform: translateY(-4px); box-shadow: 0 20px 40px rgba(91,44,159,.3); }
-        .cta-btn { display: inline-block; padding: .875rem 2rem; border-radius: .75rem; font-weight: 700;
-          text-decoration: none; font-size: 1rem; transition: opacity .2s; }
-        .cta-btn:hover { opacity: 0.85; }
-      `}</style>
-
-      <section style={{ minHeight: "90vh", display: "flex", alignItems: "center", justifyContent: "center",
-        background: "radial-gradient(ellipse at top,#1a0a2e 0%,#0d0618 60%)", padding: "4rem 1.5rem", textAlign: "center" }}>
-        <div style={{ maxWidth: "900px", animation: "fadeInUp .8s ease forwards" }}>
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "1rem", marginBottom: "2rem" }}>
-            <Image src="/logo.jpeg" alt="Raptor Webcraft" width={80} height={80}
-              style={{ borderRadius: "1.25rem", objectFit: "contain" }} />
+      <section style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center",
+        background: "linear-gradient(135deg, #0d0618 0%, #1a0a2e 40%, #2d1060 70%, #0d0618 100%)",
+        padding: "6rem 1.5rem 4rem", textAlign: "center" }}>
+        <div style={{ maxWidth: "64rem", margin: "0 auto" }}>
+          <div style={{ display: "inline-block", padding: ".5rem 1.25rem",
+            background: "rgba(255,140,0,0.15)", border: "1px solid rgba(255,140,0,0.3)",
+            borderRadius: "2rem", color: "#FF8C00", fontSize: ".875rem", fontWeight: 600, marginBottom: "1.5rem" }}>
+            🦅 Software & Tech Solutions
           </div>
-          <p style={{ color: "#FF8C00", fontWeight: 600, fontSize: "1rem", letterSpacing: ".15em",
-            textTransform: "uppercase", marginBottom: "1.5rem" }}>Raptor Webcraft Technologies</p>
-          <h1 style={{ fontSize: "clamp(2.5rem,6vw,5rem)", fontWeight: 900, lineHeight: 1.1, marginBottom: "1.5rem" }}>
-            <span style={{ color: "#fff" }}>Build. </span>
-            <span style={{ background: "linear-gradient(to right,#FF8C00,#5B2C9F)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>Scale. </span>
-            <span style={{ color: "#fff" }}>Dominate.</span>
+          <h1 style={{ fontSize: "clamp(2.5rem, 6vw, 5rem)", fontWeight: 900, lineHeight: 1.1, marginBottom: "1.5rem" }}>
+            <span style={{ color: "#FF8C00" }}>Build.</span>{" "}
+            <span style={{ color: "#fff" }}>Scale.</span>{" "}
+            <span style={{ background: "linear-gradient(to right,#c084fc,#818cf8)", WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent" }}>Dominate.</span>
           </h1>
-          <p style={{ color: "#9ca3af", fontSize: "clamp(1rem,2vw,1.25rem)", marginBottom: "3rem", lineHeight: 1.7, maxWidth: "650px", margin: "0 auto 3rem" }}>
-            We craft powerful digital solutions — from stunning websites to strategic IT consulting — that drive real business results.
+          <p style={{ fontSize: "1.25rem", color: "#9ca3af", maxWidth: "42rem", margin: "0 auto 2.5rem", lineHeight: 1.7 }}>
+            Raptor Webcraft Technologies delivers world-class website development, IT consulting, and advisory services to help your business thrive in the digital age.
           </p>
           <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap" }}>
-            <Link href="/about" className="cta-btn"
-              style={{ background: "linear-gradient(to right,#FF8C00,#5B2C9F)", color: "#fff" }}>
-              Explore Our Work
+            <Link href="/about" style={{ padding: ".875rem 2rem", background: "linear-gradient(to right,#FF8C00,#5B2C9F)",
+              color: "#fff", textDecoration: "none", borderRadius: ".75rem", fontWeight: 700, fontSize: "1rem" }}>
+              Get Started
             </Link>
-            <Link href="/login" className="cta-btn"
-              style={{ border: "2px solid rgba(91,44,159,.6)", color: "#fff", background: "rgba(91,44,159,.1)" }}>
-              Get Started →
+            <Link href="/resources" style={{ padding: ".875rem 2rem",
+              border: "1px solid rgba(91,44,159,0.6)", color: "#c084fc",
+              textDecoration: "none", borderRadius: ".75rem", fontWeight: 600, fontSize: "1rem" }}>
+              View Resources
             </Link>
           </div>
-          <div style={{ display: "flex", gap: "2rem", justifyContent: "center", flexWrap: "wrap", marginTop: "4rem" }}>
-            {stats.map((s) => (
-              <div key={s.label} style={{ textAlign: "center" }}>
-                <div style={{ fontSize: "2rem", fontWeight: 900, background: "linear-gradient(to right,#FF8C00,#5B2C9F)",
-                  WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>{s.value}</div>
-                <div style={{ color: "#9ca3af", fontSize: ".85rem" }}>{s.label}</div>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "1.5rem", marginTop: "4rem" }}>
+            {STATS.map((s) => (
+              <div key={s.label} style={{ padding: "1.5rem", background: "rgba(91,44,159,0.1)",
+                border: "1px solid rgba(91,44,159,0.2)", borderRadius: "1rem" }}>
+                <div style={{ fontSize: "2rem", fontWeight: 900, color: "#FF8C00" }}>{s.value}</div>
+                <div style={{ color: "#9ca3af", fontSize: ".875rem", marginTop: ".25rem" }}>{s.label}</div>
               </div>
             ))}
           </div>
@@ -71,54 +60,39 @@ export default function HomePage() {
       </section>
 
       <section style={{ padding: "5rem 1.5rem", background: "#0d0618" }}>
-        <div style={{ maxWidth: "75rem", margin: "0 auto" }}>
-          <div style={{ textAlign: "center", marginBottom: "3rem" }}>
-            <h2 style={{ fontSize: "2.25rem", fontWeight: 900, color: "#fff", marginBottom: "1rem" }}>
-              Our <span style={{ color: "#FF8C00" }}>Services</span>
-            </h2>
-            <p style={{ color: "#9ca3af" }}>Everything you need to succeed in the digital world</p>
-          </div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(280px,1fr))", gap: "1.5rem" }}>
-            {services.map((s) => (
-              <div key={s.title} className="sc"
-                style={{ background: "rgba(26,10,46,.8)", border: "1px solid rgba(91,44,159,.3)",
-                  borderRadius: "1.25rem", padding: "2rem" }}>
+        <div style={{ maxWidth: "72rem", margin: "0 auto" }}>
+          <h2 style={{ textAlign: "center", fontSize: "2.25rem", fontWeight: 800, color: "#fff", marginBottom: ".75rem" }}>
+            Our <span style={{ color: "#FF8C00" }}>Services</span>
+          </h2>
+          <p style={{ textAlign: "center", color: "#9ca3af", marginBottom: "3rem" }}>
+            Comprehensive tech solutions for modern businesses
+          </p>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))", gap: "1.5rem" }}>
+            {SERVICES.map((s) => (
+              <div key={s.title} style={{ padding: "2rem", background: "rgba(26,10,46,0.6)",
+                border: "1px solid rgba(91,44,159,0.3)", borderRadius: "1.25rem" }}>
                 <div style={{ fontSize: "2.5rem", marginBottom: "1rem" }}>{s.icon}</div>
-                <h3 style={{ color: "#fff", fontWeight: 700, fontSize: "1.1rem", marginBottom: ".75rem" }}>{s.title}</h3>
-                <p style={{ color: "#9ca3af", fontSize: ".9rem", lineHeight: 1.6 }}>{s.desc}</p>
+                <h3 style={{ color: "#FF8C00", fontWeight: 700, marginBottom: ".75rem" }}>{s.title}</h3>
+                <p style={{ color: "#9ca3af", lineHeight: 1.6, fontSize: ".9375rem" }}>{s.desc}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      <section style={{ padding: "5rem 1.5rem", background: "rgba(91,44,159,.05)" }}>
-        <div style={{ maxWidth: "75rem", margin: "0 auto", textAlign: "center" }}>
-          <h2 style={{ fontSize: "2.25rem", fontWeight: 900, color: "#fff", marginBottom: "1rem" }}>
-            Tech <span style={{ color: "#FF8C00" }}>Stack</span>
-          </h2>
-          <p style={{ color: "#9ca3af", marginBottom: "2.5rem" }}>Technologies we use to build world-class solutions</p>
-          <div style={{ display: "flex", flexWrap: "wrap", gap: "1rem", justifyContent: "center" }}>
-            {tech.map((t) => (
-              <span key={t} style={{ padding: ".5rem 1.25rem", borderRadius: "2rem",
-                background: "rgba(91,44,159,.2)", border: "1px solid rgba(91,44,159,.4)",
-                color: "#c084fc", fontWeight: 600, fontSize: ".9rem" }}>{t}</span>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section style={{ padding: "5rem 1.5rem", background: "#0d0618", textAlign: "center" }}>
-        <div style={{ maxWidth: "600px", margin: "0 auto" }}>
-          <h2 style={{ fontSize: "2.25rem", fontWeight: 900, color: "#fff", marginBottom: "1rem" }}>
-            Ready to <span style={{ color: "#FF8C00" }}>Get Started?</span>
+      <section style={{ padding: "5rem 1.5rem", background: "linear-gradient(135deg,#1a0a2e,#0d0618)" }}>
+        <div style={{ maxWidth: "48rem", margin: "0 auto", textAlign: "center" }}>
+          <h2 style={{ fontSize: "2.25rem", fontWeight: 800, color: "#fff", marginBottom: "1rem" }}>
+            Ready to <span style={{ color: "#FF8C00" }}>Transform</span> Your Business?
           </h2>
           <p style={{ color: "#9ca3af", marginBottom: "2rem", lineHeight: 1.7 }}>
-            Let us help you build something amazing. Contact us today!
+            Contact Raptor Webcraft Technologies today and let us build something extraordinary together.
           </p>
-          <a href={"mailto:rwct.raptorwebcraft@gmail.com"} className="cta-btn"
-            style={{ background: "linear-gradient(to right,#FF8C00,#5B2C9F)", color: "#fff" }}>
-            Contact Us Today
+          <a href="mailto:rwct.raptorwebcraft@gmail.com"
+            style={{ display: "inline-block", padding: ".875rem 2.5rem",
+              background: "linear-gradient(to right,#FF8C00,#5B2C9F)", color: "#fff",
+              textDecoration: "none", borderRadius: ".75rem", fontWeight: 700, fontSize: "1.0625rem" }}>
+            Contact Us Now
           </a>
         </div>
       </section>

@@ -8,7 +8,9 @@ export const dynamic = "force-dynamic";
 export async function GET() {
   try {
     await dbConnect();
-    const resources = await Resource.find({ active: true }).sort({ createdAt: -1 }).lean();
-    return NextResponse.json({ resources });
-  } catch (e: any) { return NextResponse.json({ error: e.message }, { status: 500 }); }
+    const resources = await Resource.find({ active: true }).lean();
+    return NextResponse.json({ success: true, resources });
+  } catch (e: any) {
+    return NextResponse.json({ error: e.message }, { status: 500 });
+  }
 }

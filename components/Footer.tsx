@@ -19,36 +19,33 @@ export default function Footer() {
               </span>
             </div>
             <p style={{ color: "#9ca3af", fontSize: ".875rem", lineHeight: 1.6 }}>
-              Software &amp; Tech Solutions — Website Development, IT Consulting &amp; Advisory.
+              Software &amp; Tech Solutions. Website Development, IT Consulting &amp; Advisory.
             </p>
           </div>
 
           <div>
             <h4 style={{ color: "#FF8C00", fontWeight: 700, marginBottom: "1rem" }}>Quick Links</h4>
-            {[["Home","/"],["About Us","/about"],["Resources","/resources"],["Notices","/notices"],["Login","/login"]].map(([l,h]) => (
-              <div key={h} style={{ marginBottom: ".5rem" }}>
-                <Link href={h} style={{ color: "#9ca3af", textDecoration: "none", fontSize: ".875rem" }}>{l}</Link>
-              </div>
-            ))}
-          </div>
-
-          <div>
-            <h4 style={{ color: "#FF8C00", fontWeight: 700, marginBottom: "1rem" }}>Services</h4>
-            {["Website Development","IT Consulting","Tech Advisory","UI/UX Design","Cloud Solutions"].map((s) => (
-              <p key={s} style={{ color: "#9ca3af", fontSize: ".875rem", marginBottom: ".5rem" }}>{s}</p>
+            {["/", "/about", "/resources", "/notices", "/login"].map((href) => (
+              <Link key={href} href={href}
+                style={{ display: "block", color: "#9ca3af", textDecoration: "none", marginBottom: ".5rem", fontSize: ".875rem" }}>
+                {href === "/" ? "Home" : href.replace("/", "").charAt(0).toUpperCase() + href.replace("/", "").slice(1)}
+              </Link>
             ))}
           </div>
 
           <div>
             <h4 style={{ color: "#FF8C00", fontWeight: 700, marginBottom: "1rem" }}>Contact Us</h4>
-            <p style={{ color: "#9ca3af", fontSize: ".875rem", marginBottom: ".75rem" }}>
-              📍 Mandikhatar, Budhanilkantha-09<br />Kathmandu 44600, Bagmati, Nepal
-            </p>
+            <p style={{ color: "#9ca3af", fontSize: ".875rem", marginBottom: ".5rem" }}>📍 Mandikhatar, Budhanilkantha-09</p>
+            <p style={{ color: "#9ca3af", fontSize: ".875rem", marginBottom: ".5rem" }}>Kathmandu 44600, Bagmati, Nepal</p>
             <p style={{ color: "#9ca3af", fontSize: ".875rem", marginBottom: ".5rem" }}>📞 +977-01-4375420</p>
-            <a href="mailto:rwct.raptorwebcraft@gmail.com"
-              style={{ color: "#c084fc", fontSize: ".875rem", textDecoration: "none" }}>
-              ✉ rwct.raptorwebcraft@gmail.com
-            </a>
+            <p style={{ color: "#9ca3af", fontSize: ".875rem" }}>✉️ rwct.raptorwebcraft@gmail.com</p>
+          </div>
+
+          <div>
+            <h4 style={{ color: "#FF8C00", fontWeight: 700, marginBottom: "1rem" }}>Services</h4>
+            {["Website Development", "IT Consulting", "Advisory Services", "Tech Solutions"].map((s) => (
+              <p key={s} style={{ color: "#9ca3af", fontSize: ".875rem", marginBottom: ".5rem" }}>{s}</p>
+            ))}
           </div>
         </div>
 
