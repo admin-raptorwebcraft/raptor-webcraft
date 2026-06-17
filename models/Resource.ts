@@ -1,4 +1,4 @@
-import mongoose, { Schema, Document, Model } from "mongoose";
+import mongoose, { Schema, Document } from "mongoose";
 
 export interface IResource extends Document {
   title: string;
@@ -11,12 +11,11 @@ export interface IResource extends Document {
 
 const ResourceSchema = new Schema<IResource>({
   title:       { type: String, required: true },
-  description: { type: String, required: true },
-  category:    { type: String, required: true },
-  type:        { type: String, required: true },
+  description: { type: String },
+  category:    { type: String, default: "General" },
+  type:        { type: String, default: "document" },
   url:         { type: String, default: "#" },
   active:      { type: Boolean, default: true },
 }, { timestamps: true });
 
-const Resource: Model<IResource> = mongoose.models.Resource || mongoose.model<IResource>("Resource", ResourceSchema);
-export default Resource;
+export default mongoose.models.Resource || mongoose.model<IResource>("Resource", ResourceSchema);

@@ -1,23 +1,26 @@
 # Raptor Webcraft Technologies
 
-## Company
-Mandikhatar, Budhanilkantha-09, Kathmandu 44600, Bagmati, Nepal
-Tel: +977-01-4375420
-Email: rwct.raptorwebcraft@gmail.com
+## Quick Start
+```bash
+npm install
+npm run dev
+```
+Open http://localhost:3000
 
-## Setup
-
-1. npm install
-2. Add .env.local (included)
-3. Insert users in MongoDB Atlas UI (see seed.mjs output)
-4. npm run dev
+## Environment Variables (.env.local)
+```
+MONGODB_URI=mongodb+srv://raptor-webcraft:Techfreak2026@raptor-webcraft.wupqjnf.mongodb.net/raptor-webcraft?retryWrites=true&w=majority&appName=raptor-webcraft
+JWT_SECRET=R@pt0rW3bCr4ft_S3cur3K3y_2024!X$#Purple&Blue
+JWT_EXPIRES_IN=7d
+NEXT_PUBLIC_APP_NAME=Raptor Webcraft Technologies
+NEXT_PUBLIC_APP_URL=http://localhost:3000
+```
 
 ## Login Credentials
 - Admin: admin@raptorwebcraft.com / Admin@Raptor2024
 - User:  user@raptorwebcraft.com  / User@Raptor2024
 
-## Deploy
-- Push to GitHub
-- Import on vercel.com
-- Add env vars in Vercel dashboard
-- Redeploy
+## Contact
+- Address: Mandikhatar, Budhanilkantha-09, Kathmandu 44600, Nepal
+- Phone: +977-01-4375420
+- Email: rwct.raptorwebcraft@gmail.com

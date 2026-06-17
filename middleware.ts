@@ -8,15 +8,19 @@ export async function middleware(req: NextRequest) {
   if (!isAdmin && !isUser) return NextResponse.next();
 
   const token = req.cookies.get("rwt_token")?.value;
-  if (!token) return NextResponse.redirect(new URL("/login", req.url));
+  if (!token) {
+    return NextResponse.redirect(new URL("/login", req.url));
+  }
 
   try {
-    const secret = new TextEncoder().encode(process.env.JWT_SECRET!);
+    const secret = new TextEncoder().encode(process.env.JWT_SECRET || "fallback_secret");
     const { payload } = await jwtVerify(token, secret);
-    if (isAdmin && payload.role !== "admin")
+    if (isAdmin && (payload as any).role !== "admin") {
       return NextResponse.redirect(new URL("/dashboard/user", req.url));
-    if (isUser && payload.role === "admin")
+    }
+    if (isUser && (payload as any).role === "admin") {
       return NextResponse.redirect(new URL("/dashboard/admin", req.url));
+    }
     return NextResponse.next();
   } catch {
     return NextResponse.redirect(new URL("/login", req.url));

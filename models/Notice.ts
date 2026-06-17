@@ -1,4 +1,4 @@
-import mongoose, { Schema, Document, Model } from "mongoose";
+import mongoose, { Schema, Document } from "mongoose";
 
 export interface INotice extends Document {
   title: string;
@@ -11,10 +11,9 @@ export interface INotice extends Document {
 const NoticeSchema = new Schema<INotice>({
   title:   { type: String, required: true },
   content: { type: String, required: true },
-  type:    { type: String, enum: ["general","important","urgent","update"], default: "general" },
+  type:    { type: String, enum: ["general", "important", "urgent", "update"], default: "general" },
   pinned:  { type: Boolean, default: false },
   active:  { type: Boolean, default: true },
 }, { timestamps: true });
 
-const Notice: Model<INotice> = mongoose.models.Notice || mongoose.model<INotice>("Notice", NoticeSchema);
-export default Notice;
+export default mongoose.models.Notice || mongoose.model<INotice>("Notice", NoticeSchema);

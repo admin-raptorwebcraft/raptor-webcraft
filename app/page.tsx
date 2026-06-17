@@ -1,85 +1,103 @@
 "use client";
 import Link from "next/link";
-import { FaCode, FaLaptopCode, FaChartLine, FaShieldAlt, FaArrowRight, FaCheckCircle } from "react-icons/fa";
 
-const SERVICES = [
-  { icon: FaLaptopCode, title: "Website Development", desc: "Custom, responsive websites built with modern technologies tailored to your business needs.", color: "#FF8C00" },
-  { icon: FaCode,       title: "Software Development", desc: "Full-stack software solutions from concept to deployment, scalable and maintainable.", color: "#5B2C9F" },
-  { icon: FaChartLine,  title: "IT Consulting",         desc: "Strategic IT advisory services to help your business leverage technology effectively.", color: "#2563EB" },
-  { icon: FaShieldAlt,  title: "Tech Advisory",         desc: "Expert guidance on technology decisions, architecture, and digital transformation.", color: "#FF8C00" },
+const services = [
+  { icon: "🌐", title: "Website Development", desc: "Modern, fast, and responsive websites built with the latest technologies." },
+  { icon: "💡", title: "IT Consulting",        desc: "Strategic technology advice to drive your business forward." },
+  { icon: "📊", title: "Advisory Services",    desc: "Expert guidance on digital transformation and IT strategy." },
+  { icon: "🚀", title: "Software Solutions",   desc: "Custom software tailored to your unique business needs." },
+  { icon: "🎨", title: "UI/UX Design",         desc: "Beautiful, intuitive interfaces that users love." },
+  { icon: "🔒", title: "Cyber Security",       desc: "Protect your digital assets with enterprise-grade security." },
 ];
 
-const STATS = [
-  { label: "Projects Delivered", value: "50+" },
-  { label: "Happy Clients",      value: "40+" },
-  { label: "Years Experience",   value: "5+" },
-  { label: "Team Members",       value: "10+" },
+const stats = [
+  { n: "150+", label: "Projects Delivered" },
+  { n: "50+",  label: "Happy Clients" },
+  { n: "5+",   label: "Years Experience" },
+  { n: "24/7", label: "Support" },
 ];
+
+const tech = ["Next.js", "React", "Node.js", ".NET", "MongoDB", "TypeScript", "Tailwind CSS", "Docker"];
 
 export default function HomePage() {
   return (
-    <div style={{ background: "#0d0618", color: "#fbfbff" }}>
-      <section style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", padding: "6rem 1.5rem 4rem", textAlign: "center", background: "radial-gradient(ellipse at top,rgba(91,44,159,0.3) 0%,transparent 70%)" }}>
-        <div style={{ maxWidth: "64rem", margin: "0 auto" }}>
-          <div style={{ display: "inline-block", padding: ".375rem 1rem", borderRadius: "999px", background: "rgba(91,44,159,0.2)", border: "1px solid rgba(91,44,159,0.4)", color: "#c084fc", fontSize: ".875rem", marginBottom: "1.5rem" }}>🦅 Welcome to Raptor Webcraft Technologies</div>
-          <h1 style={{ fontSize: "clamp(2.5rem,6vw,4.5rem)", fontWeight: 900, lineHeight: 1.1, marginBottom: "1.5rem" }}>
-            <span style={{ color: "#FF8C00" }}>Build.</span>
-            <span style={{ color: "#fff" }}> Scale.</span>
-            <span style={{ background: "linear-gradient(to right,#5B2C9F,#2563EB)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}> Dominate.</span>
-          </h1>
-          <p style={{ fontSize: "clamp(1rem,2.5vw,1.25rem)", color: "#9ca3af", maxWidth: "42rem", margin: "0 auto 2.5rem", lineHeight: 1.7 }}>Nepal's premier software & IT solutions company. We build websites, deliver IT consulting, and provide tech advisory services that transform businesses.</p>
-          <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap", marginBottom: "4rem" }}>
-            <Link href="/about" style={{ padding: ".875rem 2rem", borderRadius: ".875rem", background: "linear-gradient(to right,#FF8C00,#5B2C9F)", color: "#fff", fontWeight: 700, textDecoration: "none", fontSize: "1rem" }}>Get Started</Link>
-            <Link href="/resources" style={{ padding: ".875rem 2rem", borderRadius: ".875rem", border: "1px solid rgba(91,44,159,0.6)", color: "#fff", fontWeight: 600, textDecoration: "none", fontSize: "1rem" }}>View Resources</Link>
+    <div style={{ background: "#0d0618", minHeight: "100vh" }}>
+      <style>{`
+        .hero-card { background: rgba(255,140,0,.08); border: 1px solid rgba(255,140,0,.2); border-radius: 1rem; padding: 1.5rem; text-align: center; }
+        .service-card { background: rgba(26,10,46,.6); border: 1px solid rgba(91,44,159,.25); border-radius: 1.25rem; padding: 1.75rem; transition: all .3s; }
+        .service-card:hover { border-color: rgba(255,140,0,.5); transform: translateY(-4px); background: rgba(91,44,159,.15); }
+        .tech-badge { display: inline-block; padding: .5rem 1.25rem; background: rgba(91,44,159,.15); border: 1px solid rgba(91,44,159,.3); border-radius: 9999px; color: #c084fc; font-size: .875rem; margin: .25rem; }
+        .cta-primary { display: inline-block; padding: .875rem 2rem; background: linear-gradient(to right,#FF8C00,#5B2C9F); color: #fff; font-weight: 700; border-radius: .75rem; text-decoration: none; font-size: 1rem; }
+        .cta-secondary { display: inline-block; padding: .875rem 2rem; background: transparent; border: 1px solid rgba(255,140,0,.5); color: #FF8C00; font-weight: 700; border-radius: .75rem; text-decoration: none; font-size: 1rem; }
+      `}</style>
+
+      {/* Hero */}
+      <section style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", padding: "8rem 1.5rem 4rem", background: "radial-gradient(ellipse at top,rgba(91,44,159,.3) 0%,transparent 60%)" }}>
+        <div style={{ maxWidth: "56rem", width: "100%", textAlign: "center" }}>
+          <div style={{ display: "inline-block", padding: ".375rem 1rem", background: "rgba(255,140,0,.1)", border: "1px solid rgba(255,140,0,.3)", borderRadius: "9999px", color: "#FF8C00", fontSize: ".875rem", marginBottom: "1.5rem" }}>
+            🦅 Nepal&apos;s Premier Tech Solutions Company
           </div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(120px,1fr))", gap: "1.5rem", maxWidth: "48rem", margin: "0 auto" }}>
-            {STATS.map((s) => (
-              <div key={s.label} style={{ background: "rgba(26,10,46,0.6)", border: "1px solid rgba(91,44,159,0.3)", borderRadius: "1rem", padding: "1.25rem" }}>
-                <div style={{ fontSize: "2rem", fontWeight: 900, color: "#FF8C00" }}>{s.value}</div>
-                <div style={{ fontSize: ".8125rem", color: "#9ca3af", marginTop: ".25rem" }}>{s.label}</div>
+          <h1 style={{ fontSize: "clamp(2.5rem,6vw,4.5rem)", fontWeight: 900, lineHeight: 1.1, marginBottom: "1.5rem" }}>
+            <span style={{ color: "#fff" }}>Build. </span>
+            <span style={{ background: "linear-gradient(to right,#FF8C00,#c084fc)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>Scale. </span>
+            <span style={{ color: "#fff" }}>Dominate.</span>
+          </h1>
+          <p style={{ color: "#9ca3af", fontSize: "1.125rem", lineHeight: 1.8, marginBottom: "2.5rem", maxWidth: "42rem", margin: "0 auto 2.5rem" }}>
+            Raptor Webcraft Technologies delivers cutting-edge software solutions, website development, and IT consulting services from Kathmandu, Nepal.
+          </p>
+          <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap", marginBottom: "4rem" }}>
+            <Link href="/about" className="cta-primary">Get Started</Link>
+            <Link href="/resources" className="cta-secondary">Our Resources</Link>
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(150px,1fr))", gap: "1rem" }}>
+            {stats.map((s) => (
+              <div key={s.label} className="hero-card">
+                <div style={{ fontSize: "2rem", fontWeight: 900, color: "#FF8C00" }}>{s.n}</div>
+                <div style={{ color: "#9ca3af", fontSize: ".875rem", marginTop: ".25rem" }}>{s.label}</div>
               </div>
             ))}
           </div>
         </div>
       </section>
 
+      {/* Services */}
       <section style={{ padding: "5rem 1.5rem", maxWidth: "80rem", margin: "0 auto" }}>
         <div style={{ textAlign: "center", marginBottom: "3rem" }}>
-          <h2 style={{ fontSize: "clamp(1.75rem,4vw,2.5rem)", fontWeight: 800, color: "#fff", marginBottom: ".75rem" }}>Our <span style={{ color: "#FF8C00" }}>Services</span></h2>
-          <p style={{ color: "#9ca3af", maxWidth: "36rem", margin: "0 auto" }}>Comprehensive tech solutions designed to accelerate your digital growth.</p>
+          <h2 style={{ fontSize: "2.25rem", fontWeight: 800, color: "#fff", marginBottom: ".75rem" }}>
+            Our <span style={{ color: "#FF8C00" }}>Services</span>
+          </h2>
+          <p style={{ color: "#9ca3af" }}>Everything you need to succeed in the digital world</p>
         </div>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(260px,1fr))", gap: "1.5rem" }}>
-          {SERVICES.map((s) => (
-            <div key={s.title} style={{ background: "rgba(26,10,46,0.6)", border: "1px solid rgba(91,44,159,0.3)", borderRadius: "1.25rem", padding: "2rem" }}>
-              <s.icon style={{ fontSize: "2rem", color: s.color, marginBottom: "1rem" }} />
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(280px,1fr))", gap: "1.5rem" }}>
+          {services.map((s) => (
+            <div key={s.title} className="service-card">
+              <div style={{ fontSize: "2.5rem", marginBottom: "1rem" }}>{s.icon}</div>
               <h3 style={{ color: "#fff", fontWeight: 700, marginBottom: ".5rem" }}>{s.title}</h3>
-              <p style={{ color: "#9ca3af", fontSize: ".875rem", lineHeight: 1.6 }}>{s.desc}</p>
+              <p style={{ color: "#9ca3af", fontSize: ".9rem", lineHeight: 1.7 }}>{s.desc}</p>
             </div>
           ))}
         </div>
       </section>
 
-      <section style={{ padding: "5rem 1.5rem", background: "rgba(91,44,159,0.05)", borderTop: "1px solid rgba(91,44,159,0.15)", borderBottom: "1px solid rgba(91,44,159,0.15)" }}>
-        <div style={{ maxWidth: "60rem", margin: "0 auto", textAlign: "center" }}>
-          <h2 style={{ fontSize: "clamp(1.75rem,4vw,2.5rem)", fontWeight: 800, color: "#fff", marginBottom: "1rem" }}>Why Choose <span style={{ color: "#FF8C00" }}>Raptor Webcraft?</span></h2>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(200px,1fr))", gap: "1rem", marginTop: "2.5rem" }}>
-            {["Expert Team","Modern Tech Stack","Client-First Approach","On-Time Delivery","24/7 Support","Competitive Pricing"].map((item) => (
-              <div key={item} style={{ display: "flex", alignItems: "center", gap: ".75rem", background: "rgba(26,10,46,0.4)", border: "1px solid rgba(91,44,159,0.2)", borderRadius: ".875rem", padding: "1rem 1.25rem" }}>
-                <FaCheckCircle style={{ color: "#FF8C00", flexShrink: 0 }} />
-                <span style={{ color: "#d1d5db", fontSize: ".9375rem" }}>{item}</span>
-              </div>
-            ))}
-          </div>
+      {/* Tech Stack */}
+      <section style={{ padding: "5rem 1.5rem", background: "rgba(91,44,159,.05)" }}>
+        <div style={{ maxWidth: "56rem", margin: "0 auto", textAlign: "center" }}>
+          <h2 style={{ fontSize: "2rem", fontWeight: 800, color: "#fff", marginBottom: ".75rem" }}>
+            Technologies We <span style={{ color: "#FF8C00" }}>Master</span>
+          </h2>
+          <p style={{ color: "#9ca3af", marginBottom: "2rem" }}>Built with the best tools in the industry</p>
+          <div>{tech.map((t) => <span key={t} className="tech-badge">{t}</span>)}</div>
         </div>
       </section>
 
+      {/* CTA */}
       <section style={{ padding: "5rem 1.5rem", textAlign: "center" }}>
         <div style={{ maxWidth: "42rem", margin: "0 auto" }}>
-          <h2 style={{ fontSize: "clamp(1.75rem,4vw,2.5rem)", fontWeight: 800, color: "#fff", marginBottom: "1rem" }}>Ready to <span style={{ color: "#FF8C00" }}>Get Started?</span></h2>
-          <p style={{ color: "#9ca3af", marginBottom: "2rem", lineHeight: 1.7 }}>Let's build something amazing together. Contact us today and take your business to the next level.</p>
-          <a href="mailto:rwct.raptorwebcraft@gmail.com" style={{ display: "inline-flex", alignItems: "center", gap: ".5rem", padding: "1rem 2.5rem", borderRadius: ".875rem", background: "linear-gradient(to right,#FF8C00,#5B2C9F)", color: "#fff", fontWeight: 700, textDecoration: "none", fontSize: "1.0625rem" }}>
-            Contact Us <FaArrowRight />
-          </a>
+          <h2 style={{ fontSize: "2.25rem", fontWeight: 800, color: "#fff", marginBottom: "1rem" }}>
+            Ready to <span style={{ color: "#FF8C00" }}>Transform</span> Your Business?
+          </h2>
+          <p style={{ color: "#9ca3af", marginBottom: "2rem" }}>Let&apos;s build something amazing together.</p>
+          <a href={"mailto:rwct.raptorwebcraft@gmail.com"} className="cta-primary">Contact Us Today</a>
         </div>
       </section>
     </div>

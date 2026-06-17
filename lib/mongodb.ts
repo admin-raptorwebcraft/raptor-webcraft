@@ -1,29 +1,33 @@
 import mongoose from "mongoose";
 
-declare global {
-  var mongoose: { conn: mongoose.Connection | null; promise: Promise<mongoose.Connection> | null };
-}
-
-const MONGODB_URI = process.env.MONGODB_URI!;
+const MONGODB_URI = process.env.MONGODB_URI as string;
 
 if (!MONGODB_URI) {
   throw new Error("Please define MONGODB_URI in .env.local");
 }
 
-let cached = global.mongoose;
-if (!cached) {
-  cached = global.mongoose = { conn: null, promise: null };
+interface MongooseCache {
+  conn: typeof mongoose | null;
+  promise: Promise<typeof mongoose> | null;
 }
 
-export async function dbConnect(): Promise<mongoose.Connection> {
+declare global {
+  var mongooseCache: MongooseCache;
+}
+
+if (!global.mongooseCache) {
+  global.mongooseCache = { conn: null, promise: null };
+}
+
+const cached = global.mongooseCache;
+
+export default async function dbConnect(): Promise<typeof mongoose> {
   if (cached.conn) return cached.conn;
   if (!cached.promise) {
     cached.promise = mongoose.connect(MONGODB_URI, {
       serverSelectionTimeoutMS: 10000,
       socketTimeoutMS: 10000,
-      connectTimeoutMS: 10000,
-      maxPoolSize: 10,
-    }).then((m) => m.connection);
+    });
   }
   try {
     cached.conn = await cached.promise;
@@ -33,5 +37,3 @@ export async function dbConnect(): Promise<mongoose.Connection> {
   }
   return cached.conn;
 }
-
-export default dbConnect;

@@ -15,7 +15,10 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className={inter.className} style={{ backgroundColor: "#0d0618", color: "#fbfbff", minHeight: "100vh", display: "flex", flexDirection: "column" }}>
+      <body
+        className={inter.className}
+        style={{ backgroundColor: "#0d0618", color: "#fbfbff", minHeight: "100vh", display: "flex", flexDirection: "column" }}
+      >
         <Navbar />
         <main style={{ flex: 1 }}>{children}</main>
         <Footer />

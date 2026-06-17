@@ -3,7 +3,6 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter, usePathname } from "next/navigation";
-import { FaBars, FaTimes, FaSignOutAlt, FaTachometerAlt } from "react-icons/fa";
 
 const LINKS = [
   { href: "/",          label: "Home" },
@@ -20,28 +19,41 @@ export default function Navbar() {
   const pathname = usePathname();
 
   useEffect(() => {
-    const stored = localStorage.getItem("rwt_user");
-    if (stored) setUser(JSON.parse(stored));
+    try {
+      const stored = localStorage.getItem("rwt_user");
+      if (stored) setUser(JSON.parse(stored));
+    } catch {}
     const onScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
   }, [pathname]);
 
   const logout = async () => {
-    await fetch("/api/auth/logout", { method: "POST" });
+    try { await fetch("/api/auth/logout", { method: "POST" }); } catch {}
     localStorage.removeItem("rwt_token");
     localStorage.removeItem("rwt_user");
     setUser(null);
     router.push("/login");
   };
 
-  const navBg = scrolled ? "rgba(13,6,24,0.97)" : "transparent";
-  const navBd = scrolled ? "blur(16px)" : "none";
-  const navBorder = scrolled ? "1px solid rgba(91,44,159,0.4)" : "none";
-
   return (
-    <nav style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 50, background: navBg, backdropFilter: navBd, borderBottom: navBorder, transition: "all 0.3s" }}>
-      <style>{".nav-link{color:#d1d5db;text-decoration:none;font-size:.875rem;font-weight:500;transition:color .2s}.nav-link:hover{color:#FF8C00}.nav-link.active{color:#FF8C00}.nav-btn{padding:.5rem 1.25rem;border-radius:.75rem;background:linear-gradient(to right,#FF8C00,#5B2C9F);color:#fff;font-weight:600;text-decoration:none;font-size:.875rem;display:inline-block}.logout-btn{display:flex;align-items:center;gap:.5rem;padding:.5rem 1rem;border-radius:.75rem;border:1px solid rgba(91,44,159,.6);background:rgba(26,10,46,.6);color:#fff;cursor:pointer;font-size:.875rem}.mobile-link{display:block;padding:.75rem 1rem;color:#d1d5db;text-decoration:none;font-size:.9375rem;border-radius:.5rem}@media(min-width:768px){.mdf{display:flex!important}.mdh{display:none!important}}"}</style>
+    <nav style={{
+      position: "fixed", top: 0, left: 0, right: 0, zIndex: 50,
+      background: scrolled ? "rgba(13,6,24,0.97)" : "transparent",
+      backdropFilter: scrolled ? "blur(16px)" : "none",
+      borderBottom: scrolled ? "1px solid rgba(91,44,159,0.4)" : "none",
+      transition: "all 0.3s"
+    }}>
+      <style>{`
+        .nav-link { color: #d1d5db; text-decoration: none; font-size: .875rem; font-weight: 500; transition: color .2s; }
+        .nav-link:hover { color: #FF8C00; }
+        .nav-link-active { color: #FF8C00 !important; }
+        .nav-btn { padding: .5rem 1.25rem; border-radius: .75rem; background: linear-gradient(to right,#FF8C00,#5B2C9F); color: #fff; font-weight: 600; text-decoration: none; font-size: .875rem; display: inline-block; }
+        .logout-btn { display: flex; align-items: center; gap: .5rem; padding: .5rem 1rem; border-radius: .75rem; border: 1px solid rgba(91,44,159,.6); background: rgba(26,10,46,.6); color: #fff; cursor: pointer; font-size: .875rem; }
+        .mobile-link { display: block; padding: .75rem 1rem; color: #d1d5db; text-decoration: none; font-size: .9375rem; border-radius: .5rem; }
+        .mobile-link:hover { background: rgba(91,44,159,.2); color: #FF8C00; }
+        @media(min-width:768px) { .desktop-links { display: flex !important; } .hamburger { display: none !important; } }
+      `}</style>
       <div style={{ maxWidth: "80rem", margin: "0 auto", padding: "0 1.5rem" }}>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", height: "4rem" }}>
           <Link href="/" style={{ display: "flex", alignItems: "center", gap: ".5rem", textDecoration: "none" }}>
@@ -51,36 +63,44 @@ export default function Navbar() {
               <span style={{ color: "#fff" }}> Webcraft</span>
             </span>
           </Link>
-          <div className="mdf" style={{ display: "none", alignItems: "center", gap: "1.5rem" }}>
+
+          <div className="desktop-links" style={{ display: "none", alignItems: "center", gap: "1.5rem" }}>
             {LINKS.map((l) => (
-              <Link key={l.href} href={l.href} className={"nav-link" + (pathname === l.href ? " active" : "")}>{l.label}</Link>
+              <Link key={l.href} href={l.href} className={"nav-link" + (pathname === l.href ? " nav-link-active" : "")}>
+                {l.label}
+              </Link>
             ))}
             {user ? (
               <div style={{ display: "flex", alignItems: "center", gap: ".75rem" }}>
                 <Link href={user.role === "admin" ? "/dashboard/admin" : "/dashboard/user"} className="nav-link" style={{ color: "#c084fc" }}>
-                  <FaTachometerAlt style={{ display: "inline", marginRight: ".25rem" }} />Dashboard
+                  Dashboard
                 </Link>
-                <button onClick={logout} className="logout-btn"><FaSignOutAlt /> Logout</button>
+                <button onClick={logout} className="logout-btn">Logout</button>
               </div>
             ) : (
               <Link href="/login" className="nav-btn">Login</Link>
             )}
           </div>
-          <button onClick={() => setOpen(!open)} className="mdh" style={{ background: "none", border: "none", color: "#fff", cursor: "pointer", padding: ".5rem" }}>
-            {open ? <FaTimes size={22} /> : <FaBars size={22} />}
+
+          <button className="hamburger" onClick={() => setOpen(!open)}
+            style={{ background: "none", border: "none", color: "#fff", cursor: "pointer", padding: ".5rem", fontSize: "1.5rem" }}>
+            {open ? "✕" : "☰"}
           </button>
         </div>
+
         {open && (
           <div style={{ padding: "1rem 0", borderTop: "1px solid rgba(91,44,159,.3)" }}>
             {LINKS.map((l) => (
               <Link key={l.href} href={l.href} className="mobile-link" onClick={() => setOpen(false)}>{l.label}</Link>
             ))}
             {user ? (
-              <button onClick={() => { logout(); setOpen(false); }} style={{ width: "100%", textAlign: "left", background: "none", border: "none", cursor: "pointer", color: "#f87171", padding: ".75rem 1rem", fontSize: ".9375rem" }}>
-                <FaSignOutAlt style={{ display: "inline", marginRight: ".5rem" }} /> Logout
+              <button onClick={logout} style={{ width: "100%", marginTop: ".5rem", padding: ".75rem 1rem", background: "none", border: "1px solid rgba(91,44,159,.4)", borderRadius: ".5rem", color: "#fff", cursor: "pointer" }}>
+                Logout
               </button>
             ) : (
-              <Link href="/login" className="mobile-link" style={{ color: "#FF8C00" }} onClick={() => setOpen(false)}>Login</Link>
+              <Link href="/login" className="mobile-link" style={{ color: "#FF8C00", fontWeight: 600 }} onClick={() => setOpen(false)}>
+                Login
+              </Link>
             )}
           </div>
         )}
