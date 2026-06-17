@@ -1,11 +1,30 @@
 import jwt from "jsonwebtoken";
 
-const SECRET = process.env.JWT_SECRET || "fallback_secret_key_change_in_production";
-
-export function signToken(payload: object): string {
-  return jwt.sign(payload, SECRET, { expiresIn: "7d" });
+interface TokenPayload {
+  id: string;
+  role: "user" | "admin";
+  email: string;
 }
 
-export function verifyToken(token: string): any {
-  return jwt.verify(token, SECRET);
+export function verifyToken(token: string): TokenPayload {
+  return jwt.verify(token, process.env.JWT_SECRET as string) as TokenPayload;
+}
+
+export function getTokenFromHeader(authHeader?: string | null): string {
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    throw new Error("No valid authorization header");
+  }
+  return authHeader.replace("Bearer ", "");
+}
+
+export function requireAuth(
+  req: Request,
+  allowedRoles: ("user" | "admin")[] = ["user", "admin"]
+): TokenPayload {
+  const token = getTokenFromHeader(req.headers.get("Authorization"));
+  const payload = verifyToken(token);
+  if (!allowedRoles.includes(payload.role)) {
+    throw new Error("Forbidden: insufficient permissions");
+  }
+  return payload;
 }

@@ -5,20 +5,20 @@ import Resource from "@/models/Resource";
 export async function GET() {
   try {
     await dbConnect();
-    const resources = await Resource.find({ active: true }).sort({ createdAt: -1 });
-    return NextResponse.json(resources);
-  } catch {
-    return NextResponse.json([], { status: 200 });
+    const resources = await Resource.find({}).sort({ createdAt: -1 });
+    return NextResponse.json({ resources, count: resources.length });
+  } catch (err: any) {
+    return NextResponse.json({ message: err.message }, { status: 500 });
   }
 }
 
 export async function POST(req: NextRequest) {
   try {
-    await dbConnect();
     const body = await req.json();
+    await dbConnect();
     const resource = await Resource.create(body);
-    return NextResponse.json(resource, { status: 201 });
+    return NextResponse.json({ resource }, { status: 201 });
   } catch (err: any) {
-    return NextResponse.json({ message: err.message }, { status: 500 });
+    return NextResponse.json({ message: err.message }, { status: 400 });
   }
 }

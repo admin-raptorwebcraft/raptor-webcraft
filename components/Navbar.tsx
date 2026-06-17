@@ -36,14 +36,16 @@ export default function Navbar() {
     router.push("/login");
   };
 
+  const navStyle: React.CSSProperties = {
+    position: "fixed", top: 0, left: 0, right: 0, zIndex: 50,
+    background: scrolled ? "rgba(13,6,24,0.97)" : "transparent",
+    backdropFilter: scrolled ? "blur(16px)" : "none",
+    borderBottom: scrolled ? "1px solid rgba(91,44,159,0.4)" : "none",
+    transition: "all 0.3s"
+  };
+
   return (
-    <nav style={{
-      position: "fixed", top: 0, left: 0, right: 0, zIndex: 50,
-      background: scrolled ? "rgba(13,6,24,0.97)" : "transparent",
-      backdropFilter: scrolled ? "blur(16px)" : "none",
-      borderBottom: scrolled ? "1px solid rgba(91,44,159,0.4)" : "none",
-      transition: "all 0.3s"
-    }}>
+    <nav style={navStyle}>
       <style>{`
         .nav-link { color: #d1d5db; text-decoration: none; font-size: .875rem; font-weight: 500; transition: color .2s; }
         .nav-link:hover { color: #FF8C00; }
@@ -52,7 +54,7 @@ export default function Navbar() {
         .logout-btn { display: flex; align-items: center; gap: .5rem; padding: .5rem 1rem; border-radius: .75rem; border: 1px solid rgba(91,44,159,.6); background: rgba(26,10,46,.6); color: #fff; cursor: pointer; font-size: .875rem; }
         .mobile-link { display: block; padding: .75rem 1rem; color: #d1d5db; text-decoration: none; font-size: .9375rem; border-radius: .5rem; }
         .mobile-link:hover { background: rgba(91,44,159,.2); color: #FF8C00; }
-        @media(min-width:768px) { .desktop-links { display: flex !important; } .hamburger { display: none !important; } }
+        @media(min-width:768px) { .desktop-nav { display: flex !important; } .hamburger-btn { display: none !important; } }
       `}</style>
       <div style={{ maxWidth: "80rem", margin: "0 auto", padding: "0 1.5rem" }}>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", height: "4rem" }}>
@@ -64,7 +66,7 @@ export default function Navbar() {
             </span>
           </Link>
 
-          <div className="desktop-links" style={{ display: "none", alignItems: "center", gap: "1.5rem" }}>
+          <div className="desktop-nav" style={{ display: "none", alignItems: "center", gap: "1.5rem" }}>
             {LINKS.map((l) => (
               <Link key={l.href} href={l.href} className={"nav-link" + (pathname === l.href ? " nav-link-active" : "")}>
                 {l.label}
@@ -82,7 +84,7 @@ export default function Navbar() {
             )}
           </div>
 
-          <button className="hamburger" onClick={() => setOpen(!open)}
+          <button className="hamburger-btn" onClick={() => setOpen(!open)}
             style={{ background: "none", border: "none", color: "#fff", cursor: "pointer", padding: ".5rem", fontSize: "1.5rem" }}>
             {open ? "✕" : "☰"}
           </button>

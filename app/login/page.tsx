@@ -5,101 +5,135 @@ import Image from "next/image";
 import toast from "react-hot-toast";
 
 export default function LoginPage() {
+  const router = useRouter();
   const [role,     setRole]     = useState<"user" | "admin">("user");
   const [email,    setEmail]    = useState("");
   const [password, setPassword] = useState("");
-  const [showPw,   setShowPw]   = useState(false);
+  const [showPwd,  setShowPwd]  = useState(false);
   const [loading,  setLoading]  = useState(false);
-  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email || !password) { toast.error("Please fill in all fields"); return; }
+    if (!email || !password) { toast.error("Please fill in all fields."); return; }
     setLoading(true);
     try {
-      const res = await fetch("/api/auth/login", {
-        method: "POST",
+      const res  = await fetch("/api/auth/login", {
+        method:  "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password, role }),
+        body:    JSON.stringify({ email, password, role }),
       });
       const data = await res.json();
-      if (!res.ok) { toast.error(data.message || "Login failed"); return; }
+      if (!res.ok) throw new Error(data.message || "Login failed");
       localStorage.setItem("rwt_token", data.token);
-      localStorage.setItem("rwt_user",  JSON.stringify(data.user));
-      toast.success("Welcome back, " + data.user.name + "!");
-      router.push(data.user.role === "admin" ? "/dashboard/admin" : "/dashboard/user");
-    } catch {
-      toast.error("Network error — please try again");
+      localStorage.setItem("rwt_user",  JSON.stringify({ name: data.name, role: data.role, email: data.email }));
+      toast.success("Welcome back, " + data.name + "!");
+      router.push(data.role === "admin" ? "/dashboard/admin" : "/dashboard/user");
+    } catch (err: any) {
+      toast.error(err.message);
     } finally {
       setLoading(false);
     }
   };
 
+  const pageStyle: React.CSSProperties = {
+    minHeight: "100vh",
+    background: "linear-gradient(135deg, #0d0618 0%, #1a0a2e 50%, #0d0618 100%)",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: "5rem 1rem 2rem",
+  };
+
+  const cardStyle: React.CSSProperties = {
+    background: "rgba(19,8,32,0.9)",
+    border: "1px solid rgba(91,44,159,0.4)",
+    borderRadius: "1.5rem",
+    padding: "2rem",
+    width: "100%",
+    maxWidth: "420px",
+    boxShadow: "0 25px 50px rgba(91,44,159,0.3)",
+  };
+
+  const inputStyle: React.CSSProperties = {
+    width: "100%",
+    background: "#0d0618",
+    border: "1px solid rgba(91,44,159,0.4)",
+    color: "#fff",
+    padding: ".75rem 1rem",
+    borderRadius: ".75rem",
+    fontSize: ".9rem",
+    outline: "none",
+    boxSizing: "border-box",
+  };
+
   return (
-    <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "linear-gradient(135deg,#0d0618 0%,#1a0a2e 50%,#0d0618 100%)", padding: "5rem 1rem 2rem" }}>
-      <style>{`
-        .login-card { background: rgba(26,10,46,.8); border: 1px solid rgba(91,44,159,.4); border-radius: 1.5rem; padding: 2.5rem; width: 100%; max-width: 420px; backdrop-filter: blur(16px); }
-        .role-btn { flex: 1; padding: .75rem; border-radius: .75rem; font-weight: 600; font-size: .9rem; cursor: pointer; transition: all .2s; border: 1px solid rgba(91,44,159,.4); }
-        .role-btn-active { background: linear-gradient(to right,#FF8C00,#5B2C9F); color: #fff; border-color: transparent; }
-        .role-btn-inactive { background: transparent; color: #9ca3af; }
-        .input-field { width: 100%; padding: .875rem 1rem; border-radius: .75rem; background: rgba(13,6,24,.6); border: 1px solid rgba(91,44,159,.3); color: #fff; font-size: 1rem; outline: none; transition: border .2s; }
-        .input-field:focus { border-color: #FF8C00; }
-        .submit-btn { width: 100%; padding: 1rem; border-radius: .75rem; background: linear-gradient(to right,#FF8C00,#5B2C9F); color: #fff; font-weight: 700; font-size: 1rem; cursor: pointer; border: none; transition: opacity .2s; }
-        .submit-btn:hover { opacity: .9; }
-        .submit-btn:disabled { opacity: .6; cursor: not-allowed; }
-      `}</style>
-
-      <div className="login-card">
-        <div style={{ textAlign: "center", marginBottom: "2rem" }}>
-          <Image src="/logo.jpeg" alt="Raptor Webcraft" width={80} height={80} style={{ borderRadius: "1rem", objectFit: "contain", margin: "0 auto 1rem" }} />
-          <h1 style={{ fontWeight: 900, fontSize: "1.5rem" }}>
-            <span style={{ color: "#FF8C00" }}>Raptor</span>
-            <span style={{ color: "#fff" }}> Webcraft</span>
-          </h1>
-          <p style={{ color: "#9ca3af", fontSize: ".875rem", marginTop: ".25rem" }}>Sign in to your account</p>
+    <div style={pageStyle}>
+      <div style={cardStyle}>
+        <div style={{ textAlign: "center", marginBottom: "1.5rem" }}>
+          <Image src="/logo.jpeg" alt="Raptor Webcraft" width={72} height={72}
+            style={{ borderRadius: "1rem", objectFit: "contain", marginBottom: ".75rem" }} />
+          <h1 style={{ color: "#fff", fontSize: "1.5rem", fontWeight: 900 }}>Welcome Back</h1>
+          <p style={{ color: "#9ca3af", fontSize: ".875rem", marginTop: ".25rem" }}>
+            Sign in to Raptor Webcraft Technologies
+          </p>
         </div>
 
-        <div style={{ display: "flex", gap: ".5rem", marginBottom: "1.5rem" }}>
-          <button onClick={() => setRole("user")}  className={"role-btn " + (role === "user"  ? "role-btn-active" : "role-btn-inactive")}>User</button>
-          <button onClick={() => setRole("admin")} className={"role-btn " + (role === "admin" ? "role-btn-active" : "role-btn-inactive")}>Admin</button>
-        </div>
-
-        <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-          <input
-            type="email"
-            placeholder="Email address"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="input-field"
-            required
-          />
-          <div style={{ position: "relative" }}>
-            <input
-              type={showPw ? "text" : "password"}
-              placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="input-field"
-              style={{ paddingRight: "3rem" }}
-              required
-            />
-            <button type="button" onClick={() => setShowPw(!showPw)}
-              style={{ position: "absolute", right: "1rem", top: "50%", transform: "translateY(-50%)", background: "none", border: "none", color: "#9ca3af", cursor: "pointer", fontSize: "1.1rem" }}>
-              {showPw ? "🙈" : "👁️"}
+        <div style={{ display: "flex", background: "rgba(26,10,46,0.8)", border: "1px solid rgba(91,44,159,0.3)", borderRadius: "1rem", padding: "4px", marginBottom: "1.5rem" }}>
+          {(["user", "admin"] as const).map((r) => (
+            <button key={r} type="button" onClick={() => setRole(r)}
+              style={{
+                flex: 1, padding: ".625rem", borderRadius: ".75rem", border: "none", cursor: "pointer",
+                fontWeight: 600, fontSize: ".875rem", transition: "all .2s",
+                background: role === r ? "linear-gradient(to right, #FF8C00, #5B2C9F)" : "transparent",
+                color: role === r ? "#fff" : "#9ca3af",
+              }}>
+              {r === "admin" ? "Admin Login" : "User Login"}
             </button>
+          ))}
+        </div>
+
+        <form onSubmit={handleSubmit}>
+          <div style={{ marginBottom: "1rem" }}>
+            <label style={{ color: "#9ca3af", fontSize: ".8rem", display: "block", marginBottom: ".375rem" }}>Email Address</label>
+            <input type="email" value={email} onChange={(e) => setEmail(e.target.value)}
+              placeholder={role === "admin" ? "admin@raptorwebcraft.com" : "you@example.com"}
+              style={inputStyle} required />
           </div>
-          <button type="submit" className="submit-btn" disabled={loading}>
-            {loading ? "Signing in..." : "Sign In"}
+
+          <div style={{ marginBottom: "1.5rem" }}>
+            <label style={{ color: "#9ca3af", fontSize: ".8rem", display: "block", marginBottom: ".375rem" }}>Password</label>
+            <div style={{ position: "relative" }}>
+              <input type={showPwd ? "text" : "password"} value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Enter your password"
+                style={{ ...inputStyle, paddingRight: "3rem" }} required />
+              <button type="button" onClick={() => setShowPwd(!showPwd)}
+                style={{ position: "absolute", right: ".75rem", top: "50%", transform: "translateY(-50%)", background: "none", border: "none", color: "#9ca3af", cursor: "pointer", fontSize: "1rem" }}>
+                {showPwd ? "🙈" : "👁️"}
+              </button>
+            </div>
+          </div>
+
+          <button type="submit" disabled={loading}
+            style={{
+              width: "100%", padding: ".875rem",
+              background: loading ? "rgba(91,44,159,0.5)" : "linear-gradient(to right, #FF8C00, #5B2C9F)",
+              border: "none", borderRadius: ".75rem", color: "#fff",
+              fontWeight: 700, fontSize: "1rem", cursor: loading ? "not-allowed" : "pointer",
+              display: "flex", alignItems: "center", justifyContent: "center", gap: ".5rem",
+            }}>
+            {loading ? (
+              <span style={{ width: "20px", height: "20px", border: "3px solid rgba(255,255,255,.3)", borderTopColor: "#fff", borderRadius: "50%", display: "inline-block" }} className="animate-spin" />
+            ) : (
+              "Sign In as " + (role === "admin" ? "Admin" : "User")
+            )}
           </button>
         </form>
 
-        <div style={{ marginTop: "1.5rem", padding: "1rem", background: "rgba(13,6,24,.4)", borderRadius: ".75rem", border: "1px solid rgba(91,44,159,.2)" }}>
-          <p style={{ color: "#6b7280", fontSize: ".75rem", textAlign: "center" }}>
-            Default credentials:<br />
-            <span style={{ color: "#c084fc" }}>admin@raptorwebcraft.com / Admin@Raptor2024</span><br />
-            <span style={{ color: "#86efac" }}>user@raptorwebcraft.com / User@Raptor2024</span>
-          </p>
-        </div>
+        <p style={{ textAlign: "center", color: "#6b7280", fontSize: ".8rem", marginTop: "1.25rem" }}>
+          Need access?{" "}
+          <a href="mailto:rwct.raptorwebcraft@gmail.com" style={{ color: "#FF8C00" }}>Contact the admin team</a>
+        </p>
       </div>
     </div>
   );

@@ -1,116 +1,115 @@
 "use client";
-import Link from "next/link";
 
 const values = [
-  { icon: "💡", title: "Innovation",    desc: "Constantly pushing boundaries with cutting-edge solutions." },
-  { icon: "🤝", title: "Integrity",     desc: "Honest, transparent partnerships with every client." },
-  { icon: "⭐", title: "Excellence",    desc: "Delivering nothing less than the best in every project." },
-  { icon: "👥", title: "Collaboration", desc: "Working together to achieve extraordinary results." },
-  { icon: "🚀", title: "Growth",        desc: "Continuously evolving and improving our craft." },
-  { icon: "🔒", title: "Security",      desc: "Protecting your digital assets at every level." },
+  { icon: "🎯", title: "Excellence", desc: "We deliver nothing short of exceptional quality in everything we do." },
+  { icon: "💡", title: "Innovation", desc: "Constantly pushing boundaries with cutting-edge technology solutions." },
+  { icon: "🤝", title: "Partnership", desc: "We treat every client as a long-term partner, not just a project." },
+  { icon: "🔒", title: "Integrity", desc: "Honest, transparent, and ethical in all our business dealings." },
+  { icon: "⚡", title: "Agility", desc: "Fast, flexible, and responsive to changing business needs." },
+  { icon: "🌱", title: "Growth", desc: "We grow with our clients, evolving our services as you scale." },
 ];
 
 const timeline = [
-  { year: "2019", title: "Founded",          desc: "Raptor Webcraft Technologies established in Kathmandu." },
-  { year: "2020", title: "First 20 Clients", desc: "Rapidly grew client base across Nepal." },
-  { year: "2021", title: "Team Expansion",   desc: "Expanded development and consulting team." },
-  { year: "2022", title: "Regional Reach",   desc: "Extended services to clients beyond Nepal." },
-  { year: "2023", title: "100+ Projects",    desc: "Milestone of 100+ successful project deliveries." },
-  { year: "2024", title: "Innovation Hub",   desc: "Launched R&D division for next-gen solutions." },
+  { year: "2019", title: "Founded", desc: "Raptor Webcraft Technologies was established in Kathmandu, Nepal." },
+  { year: "2020", title: "First 10 Clients", desc: "Delivered 10+ successful web development projects." },
+  { year: "2021", title: "IT Consulting Launch", desc: "Expanded into IT consulting and advisory services." },
+  { year: "2022", title: "Team Growth", desc: "Grew to a team of skilled developers and consultants." },
+  { year: "2023", title: "Cloud Services", desc: "Added cloud solutions and cybersecurity advisory to our portfolio." },
+  { year: "2024", title: "50+ Projects", desc: "Surpassed 50 successful project deliveries across Nepal and beyond." },
 ];
 
 export default function AboutPage() {
   return (
-    <div style={{ background: "#0d0618", minHeight: "100vh", paddingTop: "5rem" }}>
-      <style>{`
-        .value-card { background: rgba(26,10,46,.6); border: 1px solid rgba(91,44,159,.25); border-radius: 1.25rem; padding: 1.75rem; transition: all .3s; }
-        .value-card:hover { border-color: rgba(255,140,0,.5); transform: translateY(-4px); }
-        .timeline-item { display: flex; gap: 1.5rem; padding-bottom: 2rem; position: relative; }
-        .timeline-dot { width: 3rem; height: 3rem; background: linear-gradient(to bottom right,#FF8C00,#5B2C9F); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: .75rem; flex-shrink: 0; color: #fff; }
-      `}</style>
+    <main style={{ background: "#0d0618", color: "#fbfbff", paddingTop: "4rem" }}>
 
       {/* Hero */}
-      <section style={{ padding: "4rem 1.5rem", textAlign: "center", background: "radial-gradient(ellipse at top,rgba(91,44,159,.25) 0%,transparent 60%)" }}>
-        <h1 style={{ fontSize: "clamp(2rem,5vw,3.5rem)", fontWeight: 900, color: "#fff", marginBottom: "1rem" }}>
-          About <span style={{ color: "#FF8C00" }}>Raptor Webcraft</span>
-        </h1>
-        <p style={{ color: "#9ca3af", fontSize: "1.125rem", maxWidth: "42rem", margin: "0 auto" }}>
-          Nepal&apos;s premier software and technology solutions company, headquartered in Kathmandu.
-        </p>
+      <section style={{ padding: "5rem 1.5rem", background: "linear-gradient(135deg, #0d0618, #1a0a2e)", textAlign: "center" }}>
+        <div style={{ maxWidth: "700px", margin: "0 auto" }}>
+          <h1 style={{ fontSize: "clamp(2rem,5vw,3rem)", fontWeight: 900, marginBottom: "1rem" }}>
+            About <span style={{ color: "#FF8C00" }}>Raptor Webcraft</span>
+          </h1>
+          <p style={{ color: "#9ca3af", fontSize: "1.125rem", lineHeight: 1.7 }}>
+            A passionate Software &amp; Tech Solutions Company dedicated to transforming businesses through innovative digital solutions.
+          </p>
+        </div>
       </section>
 
       {/* Who We Are */}
-      <section style={{ padding: "4rem 1.5rem", maxWidth: "64rem", margin: "0 auto" }}>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(280px,1fr))", gap: "2rem", alignItems: "center" }}>
-          <div>
-            <h2 style={{ fontSize: "2rem", fontWeight: 800, color: "#fff", marginBottom: "1rem" }}>Who We <span style={{ color: "#FF8C00" }}>Are</span></h2>
-            <p style={{ color: "#9ca3af", lineHeight: 1.8, marginBottom: "1rem" }}>
-              Raptor Webcraft Technologies is a Software & Tech Solutions company that develops websites, provides IT consulting, and offers technology advisory services. We are passionate about helping businesses succeed in the digital age.
-            </p>
-            <p style={{ color: "#9ca3af", lineHeight: 1.8 }}>
-              Based in Mandikhatar, Budhanilkantha-09, Kathmandu, Nepal, we serve clients locally and globally with cutting-edge solutions.
-            </p>
+      <section style={{ padding: "5rem 1.5rem", background: "#0a0412" }}>
+        <div style={{ maxWidth: "80rem", margin: "0 auto" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "3rem", alignItems: "center" }}>
+            <div>
+              <h2 style={{ fontSize: "2rem", fontWeight: 900, marginBottom: "1rem" }}>Who We Are</h2>
+              <p style={{ color: "#9ca3af", lineHeight: 1.8, marginBottom: "1rem" }}>
+                Raptor Webcraft Technologies is a Kathmandu-based software and tech solutions company founded with a mission to empower businesses through technology. We specialize in website development, IT consulting, and strategic technology advisory.
+              </p>
+              <p style={{ color: "#9ca3af", lineHeight: 1.8 }}>
+                Our team of experienced developers, consultants, and strategists work closely with clients to understand their unique challenges and deliver tailored solutions that drive real business results.
+              </p>
+            </div>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
+              {[
+                { label: "Mission", text: "To deliver world-class tech solutions that empower businesses to thrive in the digital era.", icon: "🎯" },
+                { label: "Vision", text: "To become the most trusted technology partner for businesses across South Asia.", icon: "🔭" },
+              ].map((item) => (
+                <div key={item.label} style={{ background: "rgba(19,8,32,0.8)", border: "1px solid rgba(91,44,159,0.4)", borderRadius: "1rem", padding: "1.5rem" }}>
+                  <div style={{ fontSize: "2rem", marginBottom: ".5rem" }}>{item.icon}</div>
+                  <h3 style={{ color: "#FF8C00", fontWeight: 700, marginBottom: ".5rem" }}>{item.label}</h3>
+                  <p style={{ color: "#9ca3af", fontSize: ".875rem", lineHeight: 1.6 }}>{item.text}</p>
+                </div>
+              ))}
+            </div>
           </div>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
-            {[{ n: "150+", l: "Projects" }, { n: "50+", l: "Clients" }, { n: "5+", l: "Years" }, { n: "24/7", l: "Support" }].map((s) => (
-              <div key={s.l} style={{ background: "rgba(255,140,0,.08)", border: "1px solid rgba(255,140,0,.2)", borderRadius: "1rem", padding: "1.5rem", textAlign: "center" }}>
-                <div style={{ fontSize: "1.875rem", fontWeight: 900, color: "#FF8C00" }}>{s.n}</div>
-                <div style={{ color: "#9ca3af", fontSize: ".875rem" }}>{s.l}</div>
+        </div>
+      </section>
+
+      {/* Core Values */}
+      <section style={{ padding: "5rem 1.5rem" }}>
+        <div style={{ maxWidth: "80rem", margin: "0 auto" }}>
+          <div style={{ textAlign: "center", marginBottom: "3rem" }}>
+            <h2 style={{ fontSize: "2rem", fontWeight: 900, marginBottom: ".75rem" }}>Our <span style={{ color: "#FF8C00" }}>Core Values</span></h2>
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))", gap: "1.5rem" }}>
+            {values.map((v) => (
+              <div key={v.title} style={{ background: "rgba(19,8,32,0.8)", border: "1px solid rgba(91,44,159,0.3)", borderRadius: "1rem", padding: "1.5rem" }}>
+                <div style={{ fontSize: "2rem", marginBottom: ".75rem" }}>{v.icon}</div>
+                <h3 style={{ color: "#fff", fontWeight: 700, marginBottom: ".5rem" }}>{v.title}</h3>
+                <p style={{ color: "#9ca3af", fontSize: ".875rem", lineHeight: 1.6 }}>{v.desc}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Mission & Vision */}
-      <section style={{ padding: "4rem 1.5rem", background: "rgba(91,44,159,.05)" }}>
-        <div style={{ maxWidth: "64rem", margin: "0 auto", display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(280px,1fr))", gap: "2rem" }}>
-          <div style={{ background: "rgba(26,10,46,.8)", border: "1px solid rgba(255,140,0,.3)", borderRadius: "1.5rem", padding: "2rem" }}>
-            <div style={{ fontSize: "2.5rem", marginBottom: "1rem" }}>🎯</div>
-            <h3 style={{ color: "#FF8C00", fontWeight: 800, fontSize: "1.25rem", marginBottom: ".75rem" }}>Our Mission</h3>
-            <p style={{ color: "#9ca3af", lineHeight: 1.8 }}>To empower businesses with innovative technology solutions that drive growth, efficiency, and digital transformation.</p>
-          </div>
-          <div style={{ background: "rgba(26,10,46,.8)", border: "1px solid rgba(91,44,159,.4)", borderRadius: "1.5rem", padding: "2rem" }}>
-            <div style={{ fontSize: "2.5rem", marginBottom: "1rem" }}>👁️</div>
-            <h3 style={{ color: "#c084fc", fontWeight: 800, fontSize: "1.25rem", marginBottom: ".75rem" }}>Our Vision</h3>
-            <p style={{ color: "#9ca3af", lineHeight: 1.8 }}>To be Nepal&apos;s most trusted technology partner, known for excellence, innovation, and delivering measurable business value.</p>
-          </div>
-        </div>
-      </section>
-
-      {/* Core Values */}
-      <section style={{ padding: "4rem 1.5rem", maxWidth: "80rem", margin: "0 auto" }}>
-        <h2 style={{ textAlign: "center", fontSize: "2rem", fontWeight: 800, color: "#fff", marginBottom: "2.5rem" }}>
-          Our Core <span style={{ color: "#FF8C00" }}>Values</span>
-        </h2>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(250px,1fr))", gap: "1.5rem" }}>
-          {values.map((v) => (
-            <div key={v.title} className="value-card">
-              <div style={{ fontSize: "2rem", marginBottom: ".75rem" }}>{v.icon}</div>
-              <h3 style={{ color: "#fff", fontWeight: 700, marginBottom: ".5rem" }}>{v.title}</h3>
-              <p style={{ color: "#9ca3af", fontSize: ".9rem", lineHeight: 1.7 }}>{v.desc}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
       {/* Timeline */}
-      <section style={{ padding: "4rem 1.5rem", background: "rgba(91,44,159,.05)" }}>
-        <div style={{ maxWidth: "42rem", margin: "0 auto" }}>
-          <h2 style={{ textAlign: "center", fontSize: "2rem", fontWeight: 800, color: "#fff", marginBottom: "2.5rem" }}>
-            Our <span style={{ color: "#FF8C00" }}>Journey</span>
-          </h2>
-          {timeline.map((t) => (
-            <div key={t.year} className="timeline-item">
-              <div className="timeline-dot">{t.year}</div>
-              <div>
-                <h3 style={{ color: "#fff", fontWeight: 700, marginBottom: ".25rem" }}>{t.title}</h3>
-                <p style={{ color: "#9ca3af", fontSize: ".9rem" }}>{t.desc}</p>
+      <section style={{ padding: "5rem 1.5rem", background: "#0a0412" }}>
+        <div style={{ maxWidth: "700px", margin: "0 auto" }}>
+          <div style={{ textAlign: "center", marginBottom: "3rem" }}>
+            <h2 style={{ fontSize: "2rem", fontWeight: 900, marginBottom: ".75rem" }}>Our <span style={{ color: "#FF8C00" }}>Journey</span></h2>
+          </div>
+          <div style={{ position: "relative", paddingLeft: "2rem", borderLeft: "2px solid rgba(91,44,159,0.4)" }}>
+            {timeline.map((t) => (
+              <div key={t.year} style={{ marginBottom: "2rem", position: "relative" }}>
+                <div style={{ position: "absolute", left: "-2.6rem", top: 0, background: "#FF8C00", color: "#000", padding: ".25rem .5rem", borderRadius: ".375rem", fontSize: ".75rem", fontWeight: 700 }}>{t.year}</div>
+                <div style={{ background: "rgba(19,8,32,0.8)", border: "1px solid rgba(91,44,159,0.3)", borderRadius: "1rem", padding: "1.25rem" }}>
+                  <h3 style={{ color: "#fff", fontWeight: 700, marginBottom: ".25rem" }}>{t.title}</h3>
+                  <p style={{ color: "#9ca3af", fontSize: ".875rem" }}>{t.desc}</p>
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </section>
-    </div>
+
+      {/* Contact Info */}
+      <section style={{ padding: "4rem 1.5rem", background: "linear-gradient(135deg, #1a0a2e, #0d0618)" }}>
+        <div style={{ maxWidth: "600px", margin: "0 auto", textAlign: "center" }}>
+          <h2 style={{ fontSize: "1.75rem", fontWeight: 900, marginBottom: "1rem" }}>Get In Touch</h2>
+          <p style={{ color: "#9ca3af", marginBottom: "1.5rem" }}>📍 Mandikhatar, Budhanilkantha-09, Kathmandu 44600, Nepal</p>
+          <p style={{ color: "#9ca3af", marginBottom: ".5rem" }}>📞 +977-01-4375420</p>
+          <a href="mailto:rwct.raptorwebcraft@gmail.com" style={{ color: "#FF8C00", textDecoration: "none" }}>✉️ rwct.raptorwebcraft@gmail.com</a>
+        </div>
+      </section>
+    </main>
   );
 }

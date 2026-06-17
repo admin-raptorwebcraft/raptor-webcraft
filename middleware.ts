@@ -8,9 +8,7 @@ export async function middleware(req: NextRequest) {
   if (!isAdmin && !isUser) return NextResponse.next();
 
   const token = req.cookies.get("rwt_token")?.value;
-  if (!token) {
-    return NextResponse.redirect(new URL("/login", req.url));
-  }
+  if (!token) return NextResponse.redirect(new URL("/login", req.url));
 
   try {
     const secret = new TextEncoder().encode(process.env.JWT_SECRET || "fallback_secret");
