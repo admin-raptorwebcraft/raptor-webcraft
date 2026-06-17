@@ -1,23 +1,28 @@
 import mongoose from "mongoose";
 
-const MONGODB_URI = process.env.MONGODB_URI as string;
-
-interface Cached {
-  conn: typeof mongoose | null;
-  promise: Promise<typeof mongoose> | null;
+declare global {
+  var _mongooseConn: typeof mongoose | null;
+  var _mongoosePromise: Promise<typeof mongoose> | null;
 }
 
-const cached: Cached = (global as any).__mongoose ?? ((global as any).__mongoose = { conn: null, promise: null });
+if (!global._mongooseConn) { global._mongooseConn = null; }
+if (!global._mongoosePromise) { global._mongoosePromise = null; }
 
-export default async function dbConnect(): Promise<typeof mongoose> {
-  if (cached.conn) return cached.conn;
-  if (!cached.promise) {
-    cached.promise = mongoose.connect(MONGODB_URI, {
-      bufferCommands: false,
-      connectTimeoutMS: 10000,
+export async function dbConnect(): Promise<typeof mongoose> {
+  if (global._mongooseConn && global._mongooseConn.connection.readyState === 1) {
+    return global._mongooseConn;
+  }
+  const uri = process.env.MONGODB_URI;
+  if (!uri) throw new Error("MONGODB_URI environment variable is not set");
+
+  if (!global._mongoosePromise) {
+    global._mongoosePromise = mongoose.connect(uri, {
       serverSelectionTimeoutMS: 10000,
+      socketTimeoutMS: 30000,
+      maxPoolSize: 10,
     });
   }
-  cached.conn = await cached.promise;
-  return cached.conn;
+  global._mongooseConn = await global._mongoosePromise;
+  return global._mongooseConn;
 }
+export default dbConnect;

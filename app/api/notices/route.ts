@@ -2,23 +2,22 @@ import { NextRequest, NextResponse } from "next/server";
 import dbConnect from "@/lib/mongodb";
 import Notice from "@/models/Notice";
 
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
+
 export async function GET() {
   try {
     await dbConnect();
-    const notices = await Notice.find({}).sort({ pinned: -1, createdAt: -1 });
-    return NextResponse.json({ notices, count: notices.length });
-  } catch (err: any) {
-    return NextResponse.json({ message: err.message }, { status: 500 });
-  }
+    const notices = await Notice.find({ active: true }).sort({ pinned: -1, createdAt: -1 }).lean();
+    return NextResponse.json({ notices });
+  } catch (e: any) { return NextResponse.json({ error: e.message }, { status: 500 }); }
 }
 
 export async function POST(req: NextRequest) {
   try {
-    const body = await req.json();
     await dbConnect();
+    const body = await req.json();
     const notice = await Notice.create(body);
     return NextResponse.json({ notice }, { status: 201 });
-  } catch (err: any) {
-    return NextResponse.json({ message: err.message }, { status: 400 });
-  }
+  } catch (e: any) { return NextResponse.json({ error: e.message }, { status: 500 }); }
 }

@@ -1,30 +1,12 @@
-import jwt from "jsonwebtoken";
+import { cookies } from "next/headers";
+import { jwtVerify } from "jose";
 
-interface TokenPayload {
-  id: string;
-  role: "user" | "admin";
-  email: string;
-}
-
-export function verifyToken(token: string): TokenPayload {
-  return jwt.verify(token, process.env.JWT_SECRET as string) as TokenPayload;
-}
-
-export function getTokenFromHeader(authHeader?: string | null): string {
-  if (!authHeader || !authHeader.startsWith("Bearer ")) {
-    throw new Error("No valid authorization header");
-  }
-  return authHeader.replace("Bearer ", "");
-}
-
-export function requireAuth(
-  req: Request,
-  allowedRoles: ("user" | "admin")[] = ["user", "admin"]
-): TokenPayload {
-  const token = getTokenFromHeader(req.headers.get("Authorization"));
-  const payload = verifyToken(token);
-  if (!allowedRoles.includes(payload.role)) {
-    throw new Error("Forbidden: insufficient permissions");
-  }
-  return payload;
+export async function getServerSession() {
+  try {
+    const token = cookies().get("rwt_token")?.value;
+    if (!token) return null;
+    const secret = new TextEncoder().encode(process.env.JWT_SECRET || "fallback");
+    const { payload } = await jwtVerify(token, secret);
+    return payload as { id: string; name: string; email: string; role: string };
+  } catch { return null; }
 }
