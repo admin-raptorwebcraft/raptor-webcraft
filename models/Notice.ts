@@ -2,22 +2,57 @@ import mongoose, { Schema, Document, Model } from "mongoose";
 
 export interface INotice extends Document {
   title: string;
-  content: string;
-  type: "general" | "important" | "urgent" | "update";
+  description: string;
+  priority: "Low" | "Medium" | "High";
+  published: boolean;
   pinned: boolean;
-  active: boolean;
+  expiryDate?: Date;
+  createdBy: mongoose.Types.ObjectId;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 const NoticeSchema = new Schema<INotice>(
   {
-    title:   { type: String, required: true },
-    content: { type: String, required: true },
-    type:    { type: String, enum: ["general", "important", "urgent", "update"], default: "general" },
-    pinned:  { type: Boolean, default: false },
-    active:  { type: Boolean, default: true },
+    title: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+
+    description: {
+      type: String,
+      required: true,
+    },
+
+    priority: {
+      type: String,
+      enum: ["Low", "Medium", "High"],
+      default: "Low",
+    },
+
+    published: {
+      type: Boolean,
+      default: true,
+    },
+
+    pinned: {
+      type: Boolean,
+      default: false,
+    },
+
+    expiryDate: Date,
+
+    createdBy: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
   },
-  { timestamps: true }
+  {
+    timestamps: true,
+  }
 );
 
-const Notice: Model<INotice> = mongoose.models.Notice || mongoose.model<INotice>("Notice", NoticeSchema);
-export default Notice;
+export default (mongoose.models.Notice as Model<INotice>) ||
+  mongoose.model<INotice>("Notice", NoticeSchema);
